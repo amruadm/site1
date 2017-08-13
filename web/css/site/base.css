@@ -1,11 +1,6 @@
 #d_body{
-	position: absolute;
 	background-color: #ffffff;
-	min-width:  75%;
 }
 #d_list{
-	position: absolute;
-	background-color: #b3daff;	
-	min-height: 25%;
-	min-width:  15%;
+	background-color: #b3daff;
 }
