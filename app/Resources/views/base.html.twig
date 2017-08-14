@@ -13,23 +13,34 @@
         <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>        
     </head>
     <body>
-        <div id="d_top">{% block top %}{% endblock %}</div>
-        <div class="container-fluid">
-            <div class="row-fluid">
-
-                <div id="d_list" class="span2">
-                    <ul class="nav nav-tabs nav-stacked">
-                        <li><a href="/"></a>Главная</li>
-                        <li><a href="/about">О нас</a></li>
-                    </ul>
-                </div>
-                
-                <div id="d_body" class="span10">
-                    {% block body %}{% endblock %}
-                </div>
-            </div>
-        </div>            
-        <div id="d_footer">{% block footer %}{% endblock %}</div>
+        <table style="margin: 0 auto; width: 50%;">
+            <tr>
+                <td colspan="2">
+                    <div style="height: 100px;">
+                        {% block top %}{% endblock %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="d_list" style="width: 150px; height: 200px; background-color: #dddddd;">
+                        <a href="/">Главная</a><br />
+                        <a href="/register">Регистрация</a><br />
+                        <a href="/about">О нас</a>                        
+                    </div>
+                </td>
+                <td>
+                    <div id="d_body">
+                        {% block body %}{% endblock %}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div id="d_footer">{% block footer %}{% endblock %}</div>
+                </td>
+            </tr>
+        </table>        
         {% block javascripts %}{% endblock %}
     </body>
 </html>

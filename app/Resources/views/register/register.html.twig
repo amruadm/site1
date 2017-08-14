@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div>
+		<form action="/register" method="PUT">
+			<table>
+				<tr>
+					<td>Имя пользователя</td><td> <input type="text" name="username" /></td>
+				</tr>				
+				<tr>
+					<td>Пароль</td><td><input type="password" name="pass" /></td>
+				</tr>
+				<tr>
+					<td>Подтверждение</td><td><input type="password" name="confirm_pass" /></td>
+				</tr>				
+				<tr><td><button type="submit">Done</button></td></tr>
+			</table>
+		</form>
+	</div>
+{% endblock %}
