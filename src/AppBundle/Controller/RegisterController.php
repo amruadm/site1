@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -17,7 +18,7 @@ class RegisterController extends Controller
 	/**
 	 * @Route("/register", name="register")
 	 */
-	public function registerAction(Request $request)
+	public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
 	{
 
 		$user = new User();
@@ -37,16 +38,21 @@ class RegisterController extends Controller
 		if($form->get("cpass")->getData() == $form->get("pass")->getData()){
 			if($form->isSubmitted() && $form->isValid()){
 				$user = $form->getData();
+				$user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
 
-				$em = $this->getDoctrine()->getManager();
-				$em->persist($user);
-				$em->flush();
-
-				return $this->redirectToRoute("users");
+				try{
+					$em = $this->getDoctrine()->getManager();
+					$em->persist($user);
+					$em->flush();
+					return $this->redirectToRoute("homepage");
+				}
+				catch(Exception $e){
+					$error_msg = "Введите другое имя пользователя";
+				}
 			}
 		}
 		else{
-			$error_msg = "Pass_Error";
+			$error_msg = "Пароли не совпадают";
 		}
 
 		return $this->render('register/register.html.twig', [

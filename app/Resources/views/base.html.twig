@@ -23,14 +23,43 @@
             </tr>
             <tr>
                 <td>
-                    <div id="d_list" style="width: 150px; height: 200px; background-color: #dddddd;">
+                    <div id="d_list" style="width: 250px; min-height: 200px; background-color: #dddddd;">
+                        <div style="margin: 10px;">
                         <a href="/">Главная</a><br />
-                        <a href="/register">Регистрация</a><br />
-                        <a href="/login">Вход</a><br />
-                        <a href="/about">О нас</a>                        
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a href='/posts'></a>
+                            <a href='/userpage'></a>
+                        {% endif %}
+                        <a href="/about">О нас</a>   
+                        <hr />
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <p style="color: green;">{{app.user.username}}</p>
+                            <a href="{{ logout_path('main') }}">Выход</a>
+                        {% else %}
+                            <form action="{{ path('login') }}" method="POST">
+                                <table>
+                                    <tr>
+                                        <td>Логин</td>
+                                        <td><input name="username" type="text" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Пароль</td>
+                                        <td><input name="password" type="password" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><button type="submit" name="login">Вход</button></td>
+                                        <td><a href="/register">Регистрация</a></td>
+                                    </tr>
+                                </table>
+                            </form>
+                        {% endif %}
+                        </div>
                     </div>
                 </td>
                 <td>
+                    {% if error is defined %}
+                        <p style="color: red;">{{ error }}</p>
+                    {% endif %}
                     <div id="d_body">
                         {% block body %}{% endblock %}
                     </div>

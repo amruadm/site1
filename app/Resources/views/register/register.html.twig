@@ -2,10 +2,6 @@
 
 {% block body %}
 
-{% if error is not empty %}
-	<p style="color: red;">{{ error }}</p>
-{% endif %}
-
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}

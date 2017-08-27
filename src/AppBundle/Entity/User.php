@@ -2,15 +2,17 @@
 
 namespace AppBundle\Entity;
 
+
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Users
  *
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="users_login_key", columns={"login"})})
  * @ORM\Entity
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var string
@@ -22,7 +24,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="pass", type="string", length=32, nullable=false)
+     * @ORM\Column(name="pass", type="string", length=64, nullable=false)
      */
     private $pass;
 
@@ -125,6 +127,31 @@ class User
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getPassword()
+    {
+        return $this->getPass();
+    }
+
+    public function getSalt()
+    {
+
+    }
+
+    public function getUsername()
+    {
+        return $this->getLogin();
+    }
+
+    public function eraseCredentials()
+    {
+
     }
 }
 

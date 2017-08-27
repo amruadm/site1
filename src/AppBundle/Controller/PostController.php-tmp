@@ -1,0 +1,19 @@
+<?php
+
+namespace AppBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
+class PostController extends Controller {
+	/**
+	 * @Route("/post/{id}", name="post")
+	 */
+	public function postAction(Request $request, UserPasswordEncoderInterface $passwordEncoder) {
+		return $this->render('posts/post.html.twig', [
+
+			]);
+	}
+}
