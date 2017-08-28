@@ -2,34 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5139c83-9b4b-4022-bb08-cbeeb3e21a12" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/05768d64f14ada67330d51299c961d6a" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/18058407d4dea7f7949d37b35baf7f9a" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/57d8845c421a6d1802b4c947e68175e1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/5ace5e20af8c2a6744b0bd85ba983960" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/c1c61d894b4f5a0217927683a1565e6f" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/ce084338ec68b2bdbbd55627976b6d26" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/ec8180709b86805d99e009d23cc6f9e2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/ef5da3328da5f482d7f1d57436fbf01c" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/f0a8fe05b83f4cf96ad3c1aa45cd21a2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/fdf934fb1c6398e165ee0c391167c5cd" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.phpintel/index" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/DefaultController.php-tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/LoginController.php-tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/LogoutController.php-tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PostController.php-tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/RegisterController.php-tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/Post.php-tmp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/AppBundle/Entity/User.php-tmp" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/site1.iml" afterPath="$PROJECT_DIR$/.idea/site1.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/AppKernel.php" afterPath="$PROJECT_DIR$/app/AppKernel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/about/about.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/about/about.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/config.yml" afterPath="$PROJECT_DIR$/app/config/config.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.json" afterPath="$PROJECT_DIR$/composer.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/composer.lock" afterPath="$PROJECT_DIR$/composer.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/AboutController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/AboutController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/PostController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/PostController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/UsersController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/UsersController.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -297,12 +270,12 @@
       <option name="presentableId" value="Default" />
       <updated>1503921230727</updated>
       <workItem from="1503921232826" duration="2689000" />
-      <workItem from="1503925834123" duration="1592000" />
+      <workItem from="1503925834123" duration="2033000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4281000" />
+    <option name="totallyTimeSpent" value="4722000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
