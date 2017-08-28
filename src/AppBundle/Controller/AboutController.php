@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use AppBundle\Entity\User;
+
 class AboutController extends Controller
 {
 	/**
@@ -13,11 +15,14 @@ class AboutController extends Controller
 	 */
 	public function aboutAction(Request $request)
 	{
-
-		$random_num = mt_rand(0, 100);
+        $user = $this->getUser();
+        $msg = "anonimus";
+        if(isset($user)){
+            $msg = $user->getUsername();
+        }
 
 		return $this->render('about/about.html.twig', [
-			'number' => $random_num
+			'uname' => $msg
 		]);
 	}
 }
