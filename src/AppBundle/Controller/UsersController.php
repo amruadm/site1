@@ -14,11 +14,12 @@ use AppBundle\Entity\User;
 class UsersController extends Controller
 {
 	/**
-     * @Rest\Get("/users")
+     * @Rest\Get("/api/users")
 	 */
 	public function usersAction()
 	{
-
+        $users = $this->getDoctrine()->getRepository("AppBundle:User")->findAll();
+        return $users;
 		/*$random_num = mt_rand(0, 100);
 
 		return $this->render('register/register.html.twig', [
@@ -27,7 +28,7 @@ class UsersController extends Controller
 	}
 
 	/**
-     * @Rest\Get("/users/{id}")
+     * @Rest\Get("/api/users/{id}")
      */
 	public function idAction($id)
     {

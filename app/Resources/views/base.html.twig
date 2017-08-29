@@ -10,7 +10,9 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/base/base.css') }}">
         <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
         <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>        
+        <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/angular.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/app/main.js') }}"></script>
     </head>
     <body>
         <table style="margin: 0 auto; width: 50%;">
@@ -61,6 +63,10 @@
                         <p style="color: red;">{{ error }}</p>
                     {% endif %}
                     <div id="d_body">
+                        <div ng-app="mainApp" ng-controller="baseController">
+                            <button ng-click="changeValue()">Update</button>
+                            {[{ testValue }]}
+                        </div>
                         {% block body %}{% endblock %}
                     </div>
                 </td>
