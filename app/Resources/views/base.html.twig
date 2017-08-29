@@ -64,8 +64,23 @@
                     {% endif %}
                     <div id="d_body">
                         <div ng-app="mainApp" ng-controller="baseController">
-                            <button ng-click="changeValue()">Update</button>
-                            {[{ testValue }]}
+                            <table class="table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Login</th>
+                                        <th>Password</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="user in data">
+                                        <td>{[{ user.id }]}</td>
+                                        <td>{[{ user.login }]}</td>
+                                        <td>{[{ user.pass }]}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {[{ data.login }]}
                         </div>
                         {% block body %}{% endblock %}
                     </div>
