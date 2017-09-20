@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 align="center">Новая новость</h1>
+    <div align="center">
+        <form method="post" action="{{ path('post') }}">
+            <table>
+                <tr>
+                    <td>Заголовок</td>
+                    <td><input type="text" name="title" /></td>
+                </tr>
+                <tr>
+                    <td>Пикча</td>
+                    <td><input type="file" name="picture" /></td>
+                </tr>
+                <tr>
+                    <td>Текст</td>
+                    <td><textarea name="body"></textarea></td>
+                </tr>
+                <tr>
+                    <td><button type="submit">Опубликовать</button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

@@ -22,13 +22,12 @@ class RegisterController extends Controller
 	{
 
 		$user = new User();
-		$user->setLogin("Enter your login");
 
 		$form = $this->createFormBuilder($user)
-			->add('login', TextType::class, ['label' => 'Login'])
-			->add('pass', PasswordType::class, ['label' => 'Password '])
-			->add('cpass', PasswordType::class, ['label' => 'Confirm', 'mapped' => false])
-			->add('save', SubmitType::class, ['label' => 'Done'])
+			->add('login', TextType::class, ['label' => 'Логин'])
+			->add('pass', PasswordType::class, ['label' => 'Пароль '])
+			->add('cpass', PasswordType::class, ['label' => 'Подтверждение', 'mapped' => false])
+			->add('save', SubmitType::class, ['label' => 'Зарегаться'])
 			->getForm();
 
 		$form->handleRequest($request);

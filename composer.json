@@ -16,8 +16,10 @@
     "require": {
         "php": ">=5.5.9",
         "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/inflector": "^1.1",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/rest-bundle": "^2.2",
+        "funnyitselmo/minecraftserverstatus": "^1.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.0",
         "nelmio/cors-bundle": "^1.5",

@@ -17,12 +17,5 @@ class LoginController extends Controller
 		$error = $authUtil->getLastAuthenticationError();
 
 		return $this->redirectToRoute("homepage");
-
-		if(!empty($error)){
-
-		}
-		else{
-
-		}
 	}
 }

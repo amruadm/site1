@@ -1,0 +1,11 @@
+AppBundle\Entity\User:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+        login:
+            expose: true
+        reg_date:
+            expose: true
+        serverID:
+            expose: true

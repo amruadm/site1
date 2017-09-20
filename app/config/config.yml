@@ -41,7 +41,7 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver: pdo_pgsql
+        driver: pdo_mysql
         host: '%database_host%'
         port: '%database_port%'
         dbname: '%database_name%'
@@ -91,3 +91,22 @@ fos_rest:
         view_response_listener: 'force'
         formats:
             json: true
+
+jms_serializer:
+    property_naming:
+        separator:  _
+        lower_case: true
+
+    metadata:
+        cache: file
+        debug: "%kernel.debug%"
+        file_cache:
+            dir: "%kernel.cache_dir%/serializer"
+        directories:
+            FOSUserBundle:
+                namespace_prefix: FOS\UserBundle
+                path: %kernel.root_dir%/config/serializer/FosUserBundle
+            AppBundle:
+                namespace_prefix: AppBundle
+                path: %kernel.root_dir%/config/serializer/AppBundle
+        auto_detection: true

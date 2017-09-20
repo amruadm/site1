@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,18 @@ class UsersController extends Controller
             return new View("User not found", Response::HTTP_NOT_FOUND);
         }
         return $resultUser;
+    }
+
+    /**
+     * @Route("/user/{id}")
+     */
+    public function userAction($id)
+    {
+        $resultUser = $this->getDoctrine()->getRepository("AppBundle:User")->find($id);
+
+        return $this->render("users/user.html.twig", [
+            'user_data' => $resultUser
+        ]);
     }
 
 }

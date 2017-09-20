@@ -3,95 +3,116 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Craft-Life - Сервер Minecraft!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/base/base.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/site/base.css') }}">
         <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
         <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/angular.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/angular-sanitize.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/angular-animate.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/app/main.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/app/post.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/app/servers.js') }}"></script>
+        {% block jsincludes %} {% endblock %}
     </head>
-    <body>
-        <table style="margin: 0 auto; width: 50%;">
-            <tr>
-                <td colspan="2">
-                    <div style="height: 100px;">
-                        {% block top %}{% endblock %}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="d_list" style="width: 250px; min-height: 200px; background-color: #dddddd;">
-                        <div style="margin: 10px;">
-                        <a href="/">Главная</a><br />
+    <body ng-app="mainApp">
+        <nav class="navbar navbar-inverse center-block">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">CRAFT-LIFE</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="">Форум</a></li>
+                        <li><a href="">ТОП-игроков</a></li>
+                        <li><a href="{{ path("map") }}">Карта</a></li>
+                        <li><a href="">Информация</a></li>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a href='/posts'></a>
-                            <a href='/userpage'></a>
+                            <li><a href="{{ path("post") }}">Создать пост</a></li>
                         {% endif %}
-                        <a href="/about">О нас</a>   
-                        <hr />
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <p style="color: green;">{{app.user.username}}</p>
-                            <a href="{{ logout_path('main') }}">Выход</a>
+                            <li>
+                                <span style="font-size: 14pt;">{{app.user.username}}</span>
+                                <button type="button" class="btn btn-info btn-lg" onclick="window.location='{{ logout_path('main') }}'">Выход</button>
+                            </li>
                         {% else %}
-                            <form action="{{ path('login') }}" method="POST">
-                                <table>
-                                    <tr>
-                                        <td>Логин</td>
-                                        <td><input name="username" type="text" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Пароль</td>
-                                        <td><input name="password" type="password" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><button type="submit" name="login">Вход</button></td>
-                                        <td><a href="/register">Регистрация</a></td>
-                                    </tr>
-                                </table>
-                            </form>
+                            <li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Вход</button></li>
                         {% endif %}
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    {% if error is defined %}
-                        <p style="color: red;">{{ error }}</p>
-                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        {% if error is defined %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <div class="container-fluid" style="width: 70%">
+            <div class="row content">
+                <div class="col-sm-3 sidenav">
+                    {% block left_side %}{% endblock %}
+                </div>
+                <div class="col-sm-6 text-left">
                     <div id="d_body">
-                        <div ng-app="mainApp" ng-controller="baseController">
-                            <table class="table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Login</th>
-                                        <th>Password</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="user in data">
-                                        <td>{[{ user.id }]}</td>
-                                        <td>{[{ user.login }]}</td>
-                                        <td>{[{ user.pass }]}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            {[{ data.login }]}
-                        </div>
+                        <h1 align="center">
+                            {% block body_header %}{% endblock %}
+                        </h1>
                         {% block body %}{% endblock %}
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
+                </div>
+                <div class="col-sm-3">
+                    <br/>
+                    <div align="center">
+                        <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Загрузить лаунчер</button>
+                    </div>
+                        <div ng-controller="serversController">
+                            <h2>Сервера</h2><hr/>
+                            <table class="table table-striped">
+                                <tr>
+                                    <td><p ng-bind-html="description"></p></td>
+                                    <td>{[{players}]} / {[{maxPlayers}]}</td>
+                                </tr>
+                                <tr>
+                                    <td><button class="btn btn-info" ng-click="updateServers();">Обновить</button></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
                     <div id="d_footer">{% block footer %}{% endblock %}</div>
-                </td>
-            </tr>
-        </table>        
+                </div>
+            </div>
+        </div>
+
+        <div id="loginModal" class="modal fade center-block" role="dialog" style="width: 400px;">
+            <div class="modal-content">
+                <form action="{{ path('login') }}" method="POST">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Вход</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input name="username" type="text" placeholder="Логин" class="form-control"/>&nbsp;
+                        <br /><input name="password" type="password" placeholder="Пароль" class="form-control"/>
+                        <br/>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/register">Регистрация</a>&nbsp;<button type="submit"  name="login" class="btn btn-default">Вход</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

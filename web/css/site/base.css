@@ -1,6 +1,50 @@
-#d_body{
-	background-color: #ffffff;
+ul.nav.navbar-nav li a{
+	color: #d9edf7;
 }
-#d_list{
-	background-color: #b3daff;
+
+nav.navbar{
+	width: 75%;
+}
+
+.navbar{
+	background-color: #00ace6;
+}
+
+a.navbar-brand:link{
+	color: #66dd66;
+}
+
+a.navbar-brand:visited{
+	color: #66dd66;
+}
+
+@keyframes added {
+	from {
+		opacity: 0;
+		top: -500px;
+	}
+	to {
+		opacity: 1;
+		top: 0px;
+	}
+}
+
+@keyframes deleted {
+	from {
+		top: 0;
+		opacity: 1;
+	}
+	to {
+		top: 200px;
+		opacity: 0;
+	}
+}
+
+.animate.ng-enter
+{
+	animation: 0.15s linear added;
+}
+
+.animate.ng-leave{
+	animation: 0.15s linear deleted;
 }

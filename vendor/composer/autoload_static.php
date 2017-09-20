@@ -59,6 +59,8 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
         'M' => 
         array (
             'Monolog\\' => 8,
+            'MinecraftServerStatus\\Packets\\' => 30,
+            'MinecraftServerStatus\\' => 22,
         ),
         'J' => 
         array (
@@ -195,6 +197,14 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+        ),
+        'MinecraftServerStatus\\Packets\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/funnyitselmo/minecraftserverstatus/src/Packets',
+        ),
+        'MinecraftServerStatus\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/funnyitselmo/minecraftserverstatus/src',
         ),
         'JMS\\SerializerBundle\\' => 
         array (

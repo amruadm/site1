@@ -4,7 +4,7 @@ security:
 
     encoders:
         AppBundle\Entity\User:
-            algorithm: bcrypt
+            id: app.sha1_encoder
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
@@ -41,3 +41,6 @@ security:
                 password_parameter: password
 
             logout: true
+
+    access_control:
+        - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }

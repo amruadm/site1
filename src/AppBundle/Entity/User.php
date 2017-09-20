@@ -7,10 +7,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Users
+ * User
  *
- * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="users_login_key", columns={"login"})})
- * @ORM\Entity
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="users_login_key", columns={"login"})})
+ * @ORM\Entity(repositoryClass="UserRepository")
  */
 class User implements UserInterface
 {
@@ -33,15 +33,35 @@ class User implements UserInterface
      *
      * @ORM\Column(name="reg_date", type="datetime", nullable=false)
      */
-    private $regDate = 'now()';
+    private $regDate = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="uuid", type="string", length=36, nullable=true)
+     */
+    private $uuid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="accessToken", type="string", length=32, nullable=true)
+     */
+    private $accesstoken;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="serverID", type="string", length=41, nullable=true)
+     */
+    private $serverid;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="id", type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="users_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -129,9 +149,60 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccesstoken()
+    {
+        return $this->accesstoken;
+    }
+
+    /**
+     * @param string $accesstoken
+     */
+    public function setAccesstoken($accesstoken)
+    {
+        $this->accesstoken = $accesstoken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServerid()
+    {
+        return $this->serverid;
+    }
+
+    /**
+     * @param string $serverid
+     */
+    public function setServerid($serverid)
+    {
+        $this->serverid = $serverid;
+    }
+
+
+
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        //return ['ROLE_USER'];
+        return ['ROLE_ADMIN'];
     }
 
     public function getPassword()
@@ -141,7 +212,7 @@ class User implements UserInterface
 
     public function getSalt()
     {
-
+        return '';
     }
 
     public function getUsername()

@@ -3,41 +3,36 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\User;
+use AppBundle\Entity\User;
+use AppBundle\Entity\Post;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
- * Post
+ * Comment
  *
- * @ORM\Table(name="post", indexes={@ORM\Index(name="fki_a", columns={"added_by"})})
+ * @ORM\Table(name="comment", indexes={@ORM\Index(name="fki_added_by_fkey", columns={"added_by"}), @ORM\Index(name="fki_post_id_fkey", columns={"post_id"})})
  * @ORM\Entity
  */
-class Post
+class Comment
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=128, nullable=false)
-     */
-    private $title = 'Empty';
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="added_date", type="datetime", nullable=false)
      */
-    private $addedDate;
+    private $addedDate = 'CURRENT_TIMESTAMP';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="body", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="comm_text", type="text", length=65535, nullable=true)
      */
-    private $body;
+    private $commText;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -53,29 +48,19 @@ class Post
      */
     private $addedBy;
 
+    /**
+     * @var \AppBundle\Entity\Post
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Post")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     * })
+     */
+    private $post;
+
     public function __construct()
     {
         $this->addedDate = new \DateTime();
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return self
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -88,38 +73,30 @@ class Post
 
     /**
      * @param \DateTime $addedDate
-     *
-     * @return self
      */
-    public function setAddedDate(\DateTime $addedDate)
+    public function setAddedDate($addedDate)
     {
         $this->addedDate = $addedDate;
-
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getBody()
+    public function getCommText()
     {
-        return $this->body;
+        return $this->commText;
     }
 
     /**
-     * @param string $body
-     *
-     * @return self
+     * @param string $commText
      */
-    public function setBody($body)
+    public function setCommText($commText)
     {
-        $this->body = $body;
-
-        return $this;
+        $this->commText = $commText;
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -127,19 +104,15 @@ class Post
     }
 
     /**
-     * @param integer $id
-     *
-     * @return self
+     * @param int $id
      */
     public function setId($id)
     {
         $this->id = $id;
-
-        return $this;
     }
 
     /**
-     * @return \AppBundle\Entity\User
+     * @return Users
      */
     public function getAddedBy()
     {
@@ -148,14 +121,29 @@ class Post
 
     /**
      * @param \AppBundle\Entity\User $addedBy
-     *
-     * @return self
      */
     public function setAddedBy(\AppBundle\Entity\User $addedBy)
     {
         $this->addedBy = $addedBy;
-
-        return $this;
     }
+
+    /**
+     * @return Post
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Post $post
+     */
+    public function setPost(\AppBundle\Entity\Post $post)
+    {
+        $this->post = $post;
+    }
+
+
+
 }
 

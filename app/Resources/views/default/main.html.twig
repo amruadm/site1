@@ -1,5 +1,54 @@
 {% extends 'base.html.twig' %}
 
+{% block body_header %}
+	Новости
+{% endblock %}
+
+{% block left_side %}
+	<div ng-controller="postController">
+		<ul class="nav nav-pills nav-stacke" id="news_list">
+			<li id="post_{[{ p.id }]}" ng-repeat="p in posts" style="width: 100%;">
+				<a ng-click="getPost(p.id);">
+					<p align="left" style="font-size: 14pt;">{[{ p.title }]}</p>
+					<p style="font-size: 10pt;">{[{ p.added_date | date: 'yyyy-MM-dd HH:mm' }]}</p>
+				</a>
+			</li>
+		</ul>
+	</div>
+{% endblock %}
+
 {% block body %}
-	<h1>Welcome!</h1>	
+	<div ng-controller="postController">
+	<h2>{[{ currentPost.title }]}</h2>
+	<div>
+		<hr />
+		{[{ currentPost.body }]}
+	</div>
+	<br /><p style="font-size: 11pt;">Добавил: <b>{[{ currentPost.added_by.login }]}</b></p>
+		<hr/>
+		{% if is_granted('IS_AUTHENTICATED_FULLY')  %}
+			<div>
+				Добавить комментарий<br />
+				<textarea class="form-control" id="comm_add_text" style="min-width: 300px;" ng-model="comment_add"></textarea> <br />
+				<button ng-click="addComment();">Добавить</button>
+			</div>
+		{% endif %}
+		<p><b>Комментарии</b></p>
+		<div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
+			<div class="panel-heading">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<a ng-click="removeComment(comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
+                {% endif %}
+				{[{ comment.added_date | date: 'yyyy-MM-dd HH:mm' }]}
+				<b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
+			</div>
+			<div class="panel-body">{[{ comment.comm_text }]}</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script type="application/javascript">
+
+	</script>
 {% endblock %}
