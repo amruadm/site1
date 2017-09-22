@@ -1,13 +1,5 @@
-ul.nav.navbar-nav li a{
-	color: #d9edf7;
-}
-
 nav.navbar{
 	width: 75%;
-}
-
-.navbar{
-	background-color: #00ace6;
 }
 
 a.navbar-brand:link{

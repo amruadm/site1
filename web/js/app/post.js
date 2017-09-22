@@ -23,7 +23,6 @@ myApp.controller('postController', ['$scope', '$http', function($scope, $http){
         $scope.postComments = null;
         $http.get("/api/comments/"+$scope.currentPost.id, {}).then(function(response){
             $scope.postComments = response.data;
-            console.log(response.data);
         }, function(response){
 
         });
