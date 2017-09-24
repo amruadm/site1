@@ -1,30 +1,42 @@
 {% extends 'base.html.twig' %}
 
 {% block body_header %}
-	Новости
-{% endblock %}
 
-{% block left_side %}
-	<div ng-controller="postController">
-		<ul class="nav nav-pills nav-stacke" id="news_list">
-			<li id="post_{[{ p.id }]}" ng-repeat="p in posts" style="width: 100%;">
-				<a ng-click="getPost(p.id);">
-					<p align="left" style="font-size: 14pt;">{[{ p.title }]}</p>
-					<p style="font-size: 10pt;">{[{ p.added_date | date: 'yyyy-MM-dd HH:mm' }]}</p>
-				</a>
-			</li>
-		</ul>
-	</div>
 {% endblock %}
 
 {% block body %}
 	<div ng-controller="postController">
-	<h2>{[{ currentPost.title }]}</h2>
-	<div>
-		<hr />
-		{[{ currentPost.body }]}
-	</div>
-	<br /><p style="font-size: 11pt;">Добавил: <b>{[{ currentPost.added_by.login }]}</b></p>
+		<div class="panel panel-default news-panel" style="border: 0px;" ng-repeat="post in posts">
+			<div class="panel-heading">
+				<span class="header-number">{[{ post.added_date | date: 'yyyy-MM-dd' }]}</span>&nbsp;
+				<span class="post-title">{[{ post.title }]}</span>
+			</div>
+			<div class="panel-body" style="padding: 0px;">
+				<img src="{[{ '/img/uploads/' + post.image }]}" class="post-image" />
+				<p>
+					{[{ post.body }]}
+				</p>
+			</div>
+			<div class="panel-footer">
+				<div class="row">
+					<div class="col-sm-4">
+						Добавил: {[{ post.added_by.login }]}
+					</div>
+					<div class="col-sm-8 text-right">
+						<button class="btn btn-info btn-lg">Подробности</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--<h2>{[{ currentPost.title }]}</h2>
+		<div>
+			<hr />
+			{[{ currentPost.body }]}
+		</div>
+
+		<br /><p style="font-size: 11pt;">Добавил: <b>{[{ currentPost.added_by.login }]}</b></p>
+
 		<hr/>
 		{% if is_granted('IS_AUTHENTICATED_FULLY')  %}
 			<div>
@@ -43,7 +55,7 @@
 				<b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
 			</div>
 			<div class="panel-body">{[{ comment.comm_text }]}</div>
-		</div>
+		</div>-->
 	</div>
 {% endblock %}
 

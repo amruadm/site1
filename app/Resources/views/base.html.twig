@@ -20,13 +20,25 @@
         {% block jsincludes %} {% endblock %}
     </head>
     <body ng-app="mainApp">
+        <div class="background-image"></div>
         <nav class="navbar navbar-inverse center-block">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/">CRAFT-LIFE</a>
+            <div class="container upper-panel">
+                <div class="row">
+                    <div class="col-sm-5 text-left">
+                        <!--<span style="font-size: 30pt; color: #f7ecb5; font-family: Impact;">CRAFT-LIFE</span>-->
+                    </div>
+                    <div class="col-sm-7 text-right">
+                        <button type="button" class="btn btn-lg download-btn" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Загрузить лаунчер</button>
+                    </div>
                 </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
+            </div>
+            <div class="container-fluid">
+                <!--<div class="navbar-header">
+                    <a class="navbar-brand" href="/">CRAFT-LIFE</a>
+                </div>-->
+                <div class="collapse navbar-collapse" id="clNavbar">
                     <ul class="nav navbar-nav">
+                        <li><a href="/">Главная</a></li>
                         <li><a href="">Форум</a></li>
                         <li><a href="">ТОП-игроков</a></li>
                         <li><a href="{{ path("map") }}">Карта</a></li>
@@ -54,47 +66,40 @@
         {% if error is defined %}
             <p style="color: red;">{{ error }}</p>
         {% endif %}
-        <div class="container-fluid" style="width: 70%">
+        <div class="container-fluid body-main" style="width: 70%">
             <div class="row content">
-                <div class="col-sm-3 sidenav">
-                    {% block left_side %}{% endblock %}
-                </div>
-                <div class="col-sm-6 text-left">
-                    <div id="d_body">
+                <div class="col-sm-8 text-left">
+                    <div class="primary-panel">
                         <h1 align="center">
                             {% block body_header %}{% endblock %}
                         </h1>
                         {% block body %}{% endblock %}
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <br/>
-                    <div align="center">
-                        <button type="button" class="btn btn-success btn-lg" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Загрузить лаунчер</button>
+                <div class="col-sm-4">
+                    <div ng-controller="serversController" class="primary-panel">
+                        <span style="font-size: 20pt; color: #f7ecb5">Сервера</span><hr/>
+                        <table class="table table-striped">
+                            <tr>
+                                <td><p ng-bind-html="description"></p></td>
+                                <td>{[{players}]} / {[{maxPlayers}]}</td>
+                            </tr>
+                            <tr>
+                                <td><button class="btn btn-info" ng-click="updateServers();">Обновить</button></td>
+                                <td></td>
+                            </tr>
+                        </table>
                     </div>
-                        <div ng-controller="serversController">
-                            <h2>Сервера</h2><hr/>
-                            <table class="table table-striped">
-                                <tr>
-                                    <td><p ng-bind-html="description"></p></td>
-                                    <td>{[{players}]} / {[{maxPlayers}]}</td>
-                                </tr>
-                                <tr>
-                                    <td><button class="btn btn-info" ng-click="updateServers();">Обновить</button></td>
-                                    <td></td>
-                                </tr>
-                            </table>
-                        </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <div id="d_footer">{% block footer %}{% endblock %}</div>
+                <div class="col-sm-8">
+                    <div id="d_footer" class="footer-panel">Кипирайт и иная шняга{% block footer %}{% endblock %}</div>
                 </div>
             </div>
         </div>
 
-        <div id="loginModal" class="modal fade center-block" role="dialog" style="width: 400px;">
+        <div id="loginModal" class="modal fade center-block" role="dialog" style="width: 400px; display: none;">
             <div class="modal-content">
                 <form action="{{ path('login') }}" method="POST">
                     <div class="modal-header">

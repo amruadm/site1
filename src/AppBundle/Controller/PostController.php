@@ -7,11 +7,11 @@ use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use AppBundle\Entity\User;
@@ -20,16 +20,16 @@ use AppBundle\Entity\Post;
 class PostController extends Controller
 {
 	/**
-     * @Rest\Get("/api/post")
+     * @Rest\Get("/api/post/{offset}")
 	 */
-	public function getAction()
+	public function getAction($offset)
 	{
-	    $posts = $this->getDoctrine()->getRepository("AppBundle:Post")->findBy([],['addedDate' => 'DESC'],5);
+	    $posts = $this->getDoctrine()->getRepository("AppBundle:Post")->findBy([],['addedDate' => 'DESC'],8, $offset);
 	    return $posts;
 	}
 
 	/**
-     * @Rest\Get("api/post/{id}")
+     * @Rest\Get("api/post/get/{id}")
 	*/
 	public function idAction($id)
     {
@@ -41,7 +41,7 @@ class PostController extends Controller
     }
 
     /**
-     *@Rest\Post("api/post", name="post")
+     *@Rest\Post("api/post")
     */
     public function postAction(Request $request)
     {
@@ -75,6 +75,14 @@ class PostController extends Controller
     }
 
     /**
+     * @Route("/post/{id}", name="view_post")
+     */
+    public function viewPost($id)
+    {
+        return $this->render("");
+    }
+
+    /**
      * @Route("/post", name="post")
     */
     public function editPost(Request $request)
@@ -84,32 +92,49 @@ class PostController extends Controller
             return new View("Access denied", Response::HTTP_FORBIDDEN);
         }
 
-        $error = "";
-        if($request->isMethod("POST")){
-            $title = $request->get("title");
-            $body = $request->get("body");
-            $file = $request->files->get("picture");
-            if(empty($title) || empty($body)){
-                $error = "Не все поля заполненны";
-            }
-            else{
-                $post = new Post();
-                $post->setTitle($title);
-                $post->setBody($body);
-                $post->setAddedBy($user);
+        $post = new Post();
+        $validator = $this->get('validator');
 
-                $manager = $this->getDoctrine()->getManager();
-                $manager->persist($post);
+        $form = $this->createFormBuilder($post)
+            ->setAction($this->generateUrl('post'))
+            ->add('title', TextType::class, ['label' => 'Заголовок'])
+            ->add('body', TextareaType::class, ['label' => 'Текст'])
+            ->add('image', FileType::class, ['label' => 'Пикча'])
+            ->add('submit', SubmitType::class, ['label' => 'Окай'])->getForm();
 
-                $manager->flush();
-            }
+        $form->handleRequest($request);
+
+        $errors = '';
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $errors = $validator->validate($post);
+
+            $file = $post->getImage();
+
+            $dt = new \DateTime();
+
+            $filename = 'picture'.$dt->format('YmdHis').'.'.$file->guessExtension();
+
+            $file->move(
+                $this->getParameter('image_uploads'),
+                $filename
+            );
+
+            $post->setImage($filename);
+            $post->setAddedBy($user);
+
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($post);
+
+            $manager->flush();
+
+            $this->redirectToRoute('homepage');
         }
 
-        if(!empty($error)){
-            return $this->render("posts/edit.html.twig", ['error' => $error]);
-        }
-        else{
-            return $this->render("posts/edit.html.twig");
-        }
+        return $this->render("posts/edit.html.twig", [
+            'form' => $form->createView(),
+            'error' => $errors
+        ]);
     }
 }

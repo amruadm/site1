@@ -23,6 +23,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="image" type="string" column="image" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="addedBy" target-entity="User" fetch="LAZY">
       <join-columns>
         <join-column name="added_by" referenced-column-name="id"/>

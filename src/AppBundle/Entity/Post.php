@@ -2,8 +2,9 @@
 
 namespace AppBundle\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\User;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Post
@@ -15,7 +16,7 @@ class Post
 {
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="title", type="string", length=128, nullable=false)
      */
     private $title = 'Empty';
@@ -29,10 +30,22 @@ class Post
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(name="body", type="text", length=65535, nullable=true)
      */
     private $body;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="Please, upload the image")
+     * @Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {"image/png", "image/jpeg"},
+     *     mimeTypesMessage = "Please upload a valid PNG"
+     * )
+     * @ORM\Column(name="image", type="string", length=32, nullable=true)
+     */
+    private $image;
 
     /**
      * @var integer
@@ -68,14 +81,10 @@ class Post
 
     /**
      * @param string $title
-     *
-     * @return self
      */
     public function setTitle($title)
     {
         $this->title = $title;
-
-        return $this;
     }
 
     /**
@@ -88,14 +97,10 @@ class Post
 
     /**
      * @param \DateTime $addedDate
-     *
-     * @return self
      */
-    public function setAddedDate(\DateTime $addedDate)
+    public function setAddedDate($addedDate)
     {
         $this->addedDate = $addedDate;
-
-        return $this;
     }
 
     /**
@@ -108,18 +113,30 @@ class Post
 
     /**
      * @param string $body
-     *
-     * @return self
      */
     public function setBody($body)
     {
         $this->body = $body;
-
-        return $this;
     }
 
     /**
-     * @return integer
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return int
      */
     public function getId()
     {
@@ -127,19 +144,15 @@ class Post
     }
 
     /**
-     * @param integer $id
-     *
-     * @return self
+     * @param int $id
      */
     public function setId($id)
     {
         $this->id = $id;
-
-        return $this;
     }
 
     /**
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getAddedBy()
     {
@@ -147,15 +160,15 @@ class Post
     }
 
     /**
-     * @param \AppBundle\Entity\User $addedBy
-     *
-     * @return self
+     * @param User $addedBy
      */
-    public function setAddedBy(\AppBundle\Entity\User $addedBy)
+    public function setAddedBy(User $addedBy)
     {
         $this->addedBy = $addedBy;
-
-        return $this;
     }
+
+
+
+
 }
 

@@ -2,11 +2,8 @@ myApp.controller('postController', ['$scope', '$http', function($scope, $http){
 
     $scope.comment_add = '';
 
-    $http.get("/api/post", {}).then(function(response){
+    $http.get("/api/post/0", {}).then(function(response){
         $scope.posts = response.data;
-        $scope.currentPost = response.data[0];
-        if(response.data.length > 0)
-            $scope.getPost($scope.currentPost.id);
     });
 
     $scope.getPost = function(id){

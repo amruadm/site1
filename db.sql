@@ -147,10 +147,11 @@ CREATE TABLE `post` (
   `added_by` bigint(20) DEFAULT NULL,
   `added_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `body` text,
+  `image` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fki_a` (`added_by`),
   CONSTRAINT `post_added_by_fkey` FOREIGN KEY (`added_by`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +160,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (1,'Теперь мы на мускуле!',1,'2017-09-13 02:30:04','Променял старый добрый postgres на mysql. Ну и ладно, дохуя от базы не требую,  так что идите нахуй я дартаньян'),(2,'Что ещё нового?!',2,'2017-09-13 07:45:12','Изменили авторизацию! Теперь лаунч сервер может авторизовать пользователей!\r\nЕсть пермишены!');
+INSERT INTO `post` VALUES (1,'Теперь мы на мускуле!',1,'2017-09-13 02:30:04','Променял старый добрый postgres на mysql. Ну и ладно, дохуя от базы не требую,  так что идите нахуй я дартаньян','picture20170914.png'),(2,'Что ещё нового?!',2,'2017-09-13 07:45:12','Изменили авторизацию! Теперь лаунч сервер может авторизовать пользователей!\r\nЕсть пермишены!','picture20170914.png'),(4,'Новая фича!',1,'2017-09-23 15:13:52','Подгружаются файлы! С защитой от дурака и другой нечисти! \r\nБеееач!','picture20170924011352.jpeg');
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,4 +232,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-22 22:28:42
+-- Dump completed on 2017-09-24 23:35:31
