@@ -23,14 +23,7 @@
         <div class="background-image"></div>
         <nav class="navbar navbar-inverse center-block">
             <div class="container upper-panel">
-                <div class="row">
-                    <div class="col-sm-5 text-left">
-                        <!--<span style="font-size: 30pt; color: #f7ecb5; font-family: Impact;">CRAFT-LIFE</span>-->
-                    </div>
-                    <div class="col-sm-7 text-right">
-                        <button type="button" class="btn btn-lg download-btn" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Загрузить лаунчер</button>
-                    </div>
-                </div>
+
             </div>
             <div class="container-fluid">
                 <!--<div class="navbar-header">
@@ -39,10 +32,19 @@
                 <div class="collapse navbar-collapse" id="clNavbar">
                     <ul class="nav navbar-nav">
                         <li><a href="/">Главная</a></li>
-                        <li><a href="">Форум</a></li>
-                        <li><a href="">ТОП-игроков</a></li>
-                        <li><a href="{{ path("map") }}">Карта</a></li>
-                        <li><a href="">Информация</a></li>
+                        <li><a href="{{ url('work_in_progress') }}">Форум</a></li>
+                        <li><a href="{{ url('work_in_progress') }}">Сервера</a></li>
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Информация<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('work_in_progress') }}">Игровые команды</a></li>
+                                <li><a href="{{ url('work_in_progress') }}">FAQ</a></li>
+                                <li><a href="{{ url('work_in_progress') }}">Администрация</a></li>
+                                <li><a href="{{ url('work_in_progress') }}">О проекте</a></li>
+                                <li><a href="{{ url('work_in_progress') }}">О проекте</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ url('work_in_progress') }}">Правила</a></li>
+                        <li><a href="{{ url('work_in_progress') }}">Услуги</a></li>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li><a href="{{ path("post") }}">Создать пост</a></li>
                         {% endif %}
@@ -78,6 +80,10 @@
                 </div>
                 <div class="col-sm-4">
                     <div ng-controller="serversController" class="primary-panel">
+                        <div align="center">
+                            <button type="button" class="btn btn-lg download-btn" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Загрузить лаунчер</button>
+                        </div>
+                        <br />
                         <span style="font-size: 20pt; color: #f7ecb5">Сервера</span><hr/>
                         <table class="table table-striped">
                             <tr>
