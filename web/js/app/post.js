@@ -6,43 +6,35 @@ myApp.controller('postController', ['$scope', '$http', function($scope, $http){
         $scope.posts = response.data;
     });
 
-    $scope.getPost = function(id){
-        console.log("getPost");
-        $("#news_list li").removeClass("active");
-        for(var i = 0; i < $scope.posts.length; i++){
-            if($scope.posts[i].id === id){
-                $scope.currentPost = $scope.posts[i];
-                $("#post_"+$scope.currentPost.id).addClass("active");
-                break;
-            }
-        }
-        //$('.comment').remove();
-        $scope.postComments = null;
-        $http.get("/api/comments/"+$scope.currentPost.id, {}).then(function(response){
-            $scope.postComments = response.data;
-        }, function(response){
-
-        });
+    $scope.viewPost = function($id){
+        window.location = '/post/'+$id;
     };
 
-    $scope.addComment = function(){
+    $scope.getComments = function (id) {
+        $http.get('/api/comments/'+id, {}).then(function(response) {
+            $scope.postComments = response.data;
+        });
+    }
+
+    $scope.addComment = function(post_id){
         var comm_text = $("#comm_add_text").val();
         $http.post("/api/comment",
             {
-                'post_id': $scope.currentPost.id,
+                'post_id': post_id,
                 'comm_text': comm_text
             },
-        {}).then(function(response){ // succefull
-                $scope.getPost($scope.currentPost.id);
+            {}).then(function(response){ // succefull
+                $scope.getComments(post_id);
+                $("#comm_add_text").val('');
             },
             function (response) { // error
                 alert(response.headers);
             });
     };
 
-    $scope.removeComment = function(id){
-        $http.delete("api/comment/"+id,{}).then(function(response){
-            $scope.getPost($scope.currentPost.id);
+    $scope.removeComment = function(post_id, id){
+        $http.delete("/api/comment/"+id,{}).then(function(response){
+            $scope.getComments(post_id);
         }, function(response){
             alert("Bad response");
         });

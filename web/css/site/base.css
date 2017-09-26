@@ -41,6 +41,19 @@ nav.navbar{
 	color: #ffe8ce;
 }
 
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
+	background-color: #a86700;
+}
+
+.dropdown-menu{
+	background-color: #db9848;
+}
+
+.dropdown-menu li a:hover{
+	background-color: #ffd86d;
+	color: white;
+}
+
 .btn{
 	border-radius: 0px;
 }
@@ -130,6 +143,16 @@ a.navbar-brand:visited{
 
 .btn-info:hover{
 	background-color: #ffe066;
+}
+
+.btn-info:focus{
+	background-color: #ffbf00;
+	border: hidden;
+}
+
+.btn-info:active{
+	background-color: #bf8f00;
+	border: hidden;
 }
 
 .container{

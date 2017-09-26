@@ -33,18 +33,23 @@
                     <ul class="nav navbar-nav">
                         <li><a href="/">Главная</a></li>
                         <li><a href="{{ url('work_in_progress') }}">Форум</a></li>
-                        <li><a href="{{ url('work_in_progress') }}">Сервера</a></li>
-                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Информация<span class="caret"></span></a>
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Сервера<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url('work_in_progress') }}">Игровые команды</a></li>
-                                <li><a href="{{ url('work_in_progress') }}">FAQ</a></li>
-                                <li><a href="{{ url('work_in_progress') }}">Администрация</a></li>
-                                <li><a href="{{ url('work_in_progress') }}">О проекте</a></li>
-                                <li><a href="{{ url('work_in_progress') }}">О проекте</a></li>
+                                <li><a href="{{ url('work_in_progress') }}">Classic</a></li>
+                                <li><a href="{{ url('work_in_progress') }}">Mini-Games</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{ url('work_in_progress') }}">Правила</a></li>
-                        <li><a href="{{ url('work_in_progress') }}">Услуги</a></li>
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Информация<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('info/commands') }}">Игровые команды</a></li>
+                                <li><a href="{{ url('info/faq') }}">FAQ</a></li>
+                                <li><a href="{{ url('info/admins') }}">Администрация</a></li>
+                                <li><a href="{{ url('info/about') }}">О проекте</a></li>
+                                <li><a href="{{ url('info/banned') }}">Бан-лист</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ url('info/rules') }}">Правила</a></li>
+                        <li><a href="{{ url('services') }}">Услуги</a></li>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li><a href="{{ path("post") }}">Создать пост</a></li>
                         {% endif %}
@@ -57,7 +62,10 @@
                                 <button type="button" class="btn btn-info btn-lg" onclick="window.location='{{ logout_path('main') }}'">Выход</button>
                             </li>
                         {% else %}
-                            <li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Вход</button></li>
+                            <li>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Вход</button>
+                                <button type="button" class="btn btn-info btn-lg" onclick="window.location = '{{ url('register') }}';" >Регистрация</button>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>
@@ -66,7 +74,7 @@
 
 
         {% if error is defined %}
-            <p style="color: red;">{{ error }}</p>
+            <p style="color: red; background-color: #684646;">{{ error }}</p>
         {% endif %}
         <div class="container-fluid body-main" style="width: 70%">
             <div class="row content">

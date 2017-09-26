@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Post;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends Controller
 {
@@ -79,7 +80,13 @@ class PostController extends Controller
      */
     public function viewPost($id)
     {
-        return $this->render("");
+        $post = $this->getDoctrine()->getRepository(Post::class)->find($id);
+
+        if(!$post){
+            throw $this->createNotFoundException('Not found!');
+        }
+
+        return $this->render("posts/post.html.twig", ['post' => $post]);
     }
 
     /**

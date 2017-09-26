@@ -17,6 +17,10 @@ class DefaultController extends Controller
         /*return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);*/
-        return $this->render('default/main.html.twig');
+
+        $error = $request->getSession()->get('error');
+        $request->getSession()->remove('error');
+
+        return $this->render('default/main.html.twig', ['error' => $error]);
     }
 }
