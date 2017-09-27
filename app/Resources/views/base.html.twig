@@ -58,7 +58,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <li>
-                                <span style="font-size: 14pt;">{{app.user.username}}</span>
+                                <a style="font-size: 14pt; display: inline;" href="{{ url('userpage', {'id': app.user.id}) }}">{{app.user.username}}</a>
                                 <button type="button" class="btn btn-info btn-lg" onclick="window.location='{{ logout_path('main') }}'">Выход</button>
                             </li>
                         {% else %}

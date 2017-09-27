@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block jsincludes %}
+    <script src="{{ asset('/ext/wysiwyg/external/jquery.hotkeys.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/ext/wysiwyg/bootstrap-wysiwyg.js') }}"></script>
+    <script src="{{ asset('/ext/wysiwyg/external/google-code-prettify/prettify.js') }}"></script>
+    <link href="{{ asset('/ext/wysiwyg/index.css') }}" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <form id="eidt_form">
+            {% include 'ext/richedit.html.twig' with {'form_id': 'eidt_form'} %}
+            <br />
+            <button type="submit">Сохранить</button>
+        </form>
+    {% endif %}
+{% endblock %}

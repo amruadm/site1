@@ -41,7 +41,7 @@ class UsersController extends Controller
     }
 
     /**
-     * @Route("/user/{id}")
+     * @Route("/user/{id}", name="userpage")
      */
     public function userAction($id)
     {

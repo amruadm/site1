@@ -13,7 +13,7 @@ class InfoController extends Controller
      */
     public function commandsAction(Request $request)
     {
-        return $this->render("info/commands.html.twig");
+        return $this->render("info/commands.html.twig", ['']);
     }
 
     /**
