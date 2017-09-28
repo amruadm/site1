@@ -58,21 +58,19 @@
         </div>
 
         <div id="editor">
-            Go ahead&hellip;
         </div>
-        {% if editor_name is defined %}
-            <input id="editor_hidden" type="hidden" name="{{ editor_name }}" />
-        {% else %}
-            <input id="editor_hidden" type="hidden" name="page_value" />
-        {% endif %}
+        <input id="editor_hidden" type="hidden" name="page_value" />
     </div>
 
     <script type="application/javascript">
         $(document).ready(function(){
             $("#editor").wysiwyg();
 
-            $('#'+{{ form_id }}).submit(function(){
+            $('#editor').html($('#info_body').html())
+
+            $('#{{ form_id }}').submit(function(){
                 $('#editor_hidden').val($('#editor').html());
+                console.log($('#editor_hidden').val());
             });
 
         });

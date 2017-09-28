@@ -21,7 +21,7 @@
         <br />
         <div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
             <div class="panel-heading">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <a ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
                 {% endif %}
                 {[{ comment.added_date | date: 'yyyy-MM-dd HH:mm' }]}

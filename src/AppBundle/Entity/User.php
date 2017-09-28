@@ -17,6 +17,13 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="role", type="string", length=32, nullable=false)
+     */
+    private $role = 'ROLE_USER';
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="login", type="string", length=16, nullable=false)
      */
     private $login;
@@ -197,12 +204,25 @@ class User implements UserInterface
         $this->serverid = $serverid;
     }
 
+    /**
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->serverid;
+    }
 
+    /**
+     * @param string $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
 
     public function getRoles()
     {
-        //return ['ROLE_USER'];
-        return ['ROLE_ADMIN'];
+        return [$this->role];
     }
 
     public function getPassword()
@@ -225,4 +245,3 @@ class User implements UserInterface
 
     }
 }
-

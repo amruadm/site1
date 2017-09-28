@@ -4,55 +4,46 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Yaml\Yaml;
 
 class InfoController extends Controller
 {
     /**
-     * @Route("/info/commands", name="info/commands")
+     * @Route("/info/{action}", name="info")
      */
-    public function commandsAction(Request $request)
+    public function infoAction($action, Request $request)
     {
-        return $this->render("info/commands.html.twig", ['']);
-    }
+        $user = $request->getUser();
 
-    /**
-     * @Route("/info/faq", name="info/faq")
-     */
-    public function faqAction(Request $request)
-    {
-        return $this->render("info/faq.html.twig");
-    }
+        $infoConfig = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/info_config.yml'));
 
-    /**
-     * @Route("/info/admins", name="info/admins")
-     */
-    public function adminsAction(Request $request)
-    {
-        return $this->render("info/admins.html.twig");
-    }
+        if(isset($infoConfig[$action])){
 
-    /**
-     * @Route("/info/about", name="info/about")
-     */
-    public function aboutAction(Request $request)
-    {
-        return $this->render("info/about.html.twig");
-    }
+            $filename = $this->get('kernel')->getRootDir().'/Resources/views/info/'.$action.'.html';
 
-    /**
-     * @Route("/info/banned", name="info/banned")
-     */
-    public function bannedAction(Request $request)
-    {
-        return $this->render("info/banned.html.twig");
-    }
+            if(!file_exists($filename)){
+                file_put_contents($filename, "<h1>Please put content to this page</h1>");
+            }
 
-    /**
-     * @Route("/info/rules", name="info/rules")
-     */
-    public function rulesAction(Request $request)
-    {
-        return $this->render("info/rules.html.twig");
+            $contents = file_get_contents($filename);
+
+            $title = isset($infoConfig[$action]['title'])?$infoConfig[$action]['title']:$action;
+
+            if($request->isMethod('post') && $user){
+
+                $contents = $request->get('page_value');
+                file_put_contents($filename, $contents);
+            }
+
+            return $this->render("info/info_page_base.html.twig", [
+                'action' => $action,
+                'title' => $title
+            ]);
+        }
+        else{
+            throw $this->createNotFoundException();
+        }
     }
 }

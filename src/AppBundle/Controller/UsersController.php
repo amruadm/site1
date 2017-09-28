@@ -48,7 +48,7 @@ class UsersController extends Controller
         $resultUser = $this->getDoctrine()->getRepository("AppBundle:User")->find($id);
 
         return $this->render("users/user.html.twig", [
-            'user_data' => $resultUser
+            'user' => $resultUser
         ]);
     }
 

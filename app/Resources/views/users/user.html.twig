@@ -1,11 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1 align="center">Профиль</h1>
-    <div class="container">
-        <div class="row" align="center">
+{% block body_header %}
+    Профиль
+{% endblock %}
 
-        </div>
-    </div>
+{% block body %}
+    <table class="table">
+        <tr>
+            <td>Пользователь</td>
+            <td>{{ app.user.username }}</td>
+        </tr>
+        <tr>
+            <td>Роль</td>
+            <td>
+                {% if is_granted('ROLE_ADMIN') %}
+                    Админ
+                {% else %}
+                    Юзер
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Дата реистрации</td>
+            <td>{{ user.regdate | date('Y-m-d H:i') }}</td>
+        </tr>
+        {% if is_granted('ROLE_ADMIN') %}
+            <tr>
+                <td>uuid</td>
+                <td>{{ user.uuid }}</td>
+            </tr>
+        {% endif %}
+    </table>
 
 {% endblock %}

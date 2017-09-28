@@ -10,9 +10,16 @@
 
 {% endblock %}
 
+{% block body_header %}
+    {{ title }}
+{% endblock %}
+
 {% block body %}
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <form id="eidt_form">
+    <div id="info_body">
+        {% include 'info/'~action~'.html' %}
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <form method="post" id="eidt_form" action="">
             {% include 'ext/richedit.html.twig' with {'form_id': 'eidt_form'} %}
             <br />
             <button type="submit">Сохранить</button>

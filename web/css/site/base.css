@@ -19,7 +19,7 @@
 
 nav.navbar{
 	width: 70%;
-	background-color: #db9848;
+	background-color: rgb(252,252,252);;
 	padding: 0px;
 	box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.5), 0 30px 20px 0 rgba(0, 0, 0, 0.19);
 	border-width: 0px;
@@ -119,7 +119,7 @@ a.navbar-brand:visited{
 
 .primary-panel{
 	padding: 3%;
-	background-color: #ba6600;
+	background-color: rgb(252,252,252);
 	box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.5), 0 30px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -137,7 +137,8 @@ a.navbar-brand:visited{
 }
 
 .btn-info {
-	background-color: #ffbf00;
+	background-color: #ffee60;
+	color: black;
 	border: hidden;
 }
 

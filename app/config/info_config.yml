@@ -1,0 +1,17 @@
+commands:
+  title: 'Игровые команды'
+
+rules:
+  title: 'Правила'
+
+faq:
+  title: 'Часто задаваемые вопросы'
+
+admins:
+  title: 'Администрация'
+
+about:
+  title: 'О проекте'
+
+banned:
+  title: 'Неудачники'

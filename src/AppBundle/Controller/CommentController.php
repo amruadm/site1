@@ -32,13 +32,11 @@ class CommentController extends Controller
 
     /**
      * @Rest\Post("/api/comment")
+     * @Security("has_role('ROLE_USER')")
      */
     function postAction(Request $request)
     {
         $user = $this->getUser();
-        if(!isset($user)){
-            return new View("Access denied", Response::HTTP_FORBIDDEN);
-        }
 
         $id = $request->get("post_id");
         $targetPost = $this->getDoctrine()->getRepository("AppBundle:Post")->find($id);
@@ -65,7 +63,7 @@ class CommentController extends Controller
 
     /**
      * @Rest\Delete("/api/comment/{id}")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     function deleteAction(\AppBundle\Entity\Comment $comment)
     {

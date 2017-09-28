@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -16,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Post;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends Controller
 {
@@ -42,40 +42,6 @@ class PostController extends Controller
     }
 
     /**
-     *@Rest\Post("api/post")
-    */
-    public function postAction(Request $request)
-    {
-        $currentUser = $this->getUser();
-
-        /*$lastPost = $this->getDoctrine()->getRepository(Post::class)->findBy(
-            ['added_by' => $currentUser->getId()],
-            ['added_date', 'DESC'],
-            1
-        );*/
-
-        $body = $request->get("body");
-        $title = $request->get("title");
-
-        if($currentUser === FALSE){
-            return new View("Access denied", Response::HTTP_FORBIDDEN);
-        }
-
-        if(empty($title)
-            || empty($body)
-        ){
-            return new View("Access denied", Response::HTTP_BAD_REQUEST);
-        }
-
-        $newPost = new Post();
-        $newPost->setAddedBy($currentUser);
-        $newPost->setTitle($title);
-        $newPost->setBody($body);
-
-        return new View("Added sucifully", Response::HTTP_OK);
-    }
-
-    /**
      * @Route("/post/{id}", name="view_post")
      */
     public function viewPost($id)
@@ -91,13 +57,11 @@ class PostController extends Controller
 
     /**
      * @Route("/post", name="post")
+     * @Security("has_role('ROLE_ADMIN')")
     */
     public function editPost(Request $request)
     {
         $user = $this->getUser();
-        if($user === FALSE){
-            return new View("Access denied", Response::HTTP_FORBIDDEN);
-        }
 
         $post = new Post();
         $validator = $this->get('validator');
