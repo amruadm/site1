@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body_header %}
+    Список юзеров
+{% endblock %}
+
+{% block body %}
+    <hr />
+    <table align="center" class="table-striped" style="font-size: 14pt;">
+        <tr>
+            <th width="15%">ID</th>
+            <th width="35%;">Логин</th>
+            <th>uuid</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td><a href="{{ url('userpage', {'id': user.id}) }}" target="_blank">{{ user.login }}</a></td>
+                <td>{{ user.uuid }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

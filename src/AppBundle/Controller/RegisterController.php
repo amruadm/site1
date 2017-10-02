@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -25,8 +27,10 @@ class RegisterController extends Controller
 
 		$form = $this->createFormBuilder($user)
 			->add('login', TextType::class, ['label' => 'Логин'])
+            ->add('email', EmailType::class, ['label' => 'E-Mail'])
 			->add('pass', PasswordType::class, ['label' => 'Пароль '])
 			->add('cpass', PasswordType::class, ['label' => 'Подтверждение', 'mapped' => false])
+            ->add('image', FileType::class, ['label' => 'Аватарка', 'required' => false])
 			->add('save', SubmitType::class, ['label' => 'Зарегаться'])
 			->getForm();
 
@@ -36,8 +40,27 @@ class RegisterController extends Controller
 
 		if($form->get("cpass")->getData() == $form->get("pass")->getData()){
 			if($form->isSubmitted() && $form->isValid()){
+
+                $validator = $this->get('validator');
+
 				$user = $form->getData();
+
+                $errors = $validator->validate($user);
+
 				$user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
+
+                $file = $user->getImage();
+
+                $dt = new \DateTime();
+
+                $filename = 'picture'.$dt->format('YmdHisu').'.'.$file->guessExtension();
+
+                $file->move(
+                    $this->getParameter('avarats_uploads'),
+                    $filename
+                );
+
+                $user->setImage($filename);
 
 				try{
 					$em = $this->getDoctrine()->getManager();

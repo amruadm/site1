@@ -44,3 +44,4 @@ security:
 
     access_control:
         - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/administration, roles: ROLE_ADMIN }

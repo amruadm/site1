@@ -7,24 +7,22 @@
 {% block body %}
     <table class="table">
         <tr>
-            <td>Пользователь</td>
-            <td>{{ app.user.username }}</td>
+            <td><img src="{{ asset('img/uploads/ava/' ~ user.image) }}" width="200px" /></td>
+            <td></td>
         </tr>
         <tr>
-            <td>Роль</td>
-            <td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    Админ
-                {% else %}
-                    Юзер
-                {% endif %}
-            </td>
+            <td>Пользователь</td>
+            <td>{{ user.login }}</td>
         </tr>
         <tr>
             <td>Дата реистрации</td>
             <td>{{ user.regdate | date('Y-m-d H:i') }}</td>
         </tr>
         {% if is_granted('ROLE_ADMIN') %}
+            <tr>
+                <td>Роль</td>
+                <td>{{ user.role }}</td>
+            </tr>
             <tr>
                 <td>uuid</td>
                 <td>{{ user.uuid }}</td>

@@ -15,3 +15,9 @@ about:
 
 banned:
   title: 'Неудачники'
+
+server-classic:
+  title: 'Classic'
+
+server-mini-games:
+  title: 'Mini-Games'

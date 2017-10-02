@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraint as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +21,30 @@ class User implements UserInterface
      * @ORM\Column(name="role", type="string", length=32, nullable=false)
      */
     private $role = 'ROLE_USER';
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="Please, upload the image")
+     * @Assert\Image(
+     *     minWidth = 128,
+     *     maxWidth = 256,
+     *     minHeight = 128,
+     *     maxHeight = 256
+     * )
+     * @ORM\Column(name="image", type="string", length=32, nullable=true)
+     */
+    private $image;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=24, nullable=false)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     */
+    private $email;
 
     /**
      * @var string
@@ -94,6 +119,38 @@ class User implements UserInterface
         $this->login = $login;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -209,7 +266,7 @@ class User implements UserInterface
      */
     public function getRole()
     {
-        return $this->serverid;
+        return $this->role;
     }
 
     /**

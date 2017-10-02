@@ -35,8 +35,8 @@
                         <li><a href="{{ url('work_in_progress') }}">Форум</a></li>
                         <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Сервера<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url('work_in_progress') }}">Classic</a></li>
-                                <li><a href="{{ url('work_in_progress') }}">Mini-Games</a></li>
+                                <li><a href="{{ url('info', {'action': 'server-classic'}) }}">Classic</a></li>
+                                <li><a href="{{ url('info', {'action': 'server-mini-games'}) }}">Mini-Games</a></li>
                             </ul>
                         </li>
                         <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Информация<span class="caret"></span></a>
@@ -51,7 +51,12 @@
                         <li><a href="{{ url('info', {'action': 'rules'}) }}">Правила</a></li>
                         <li><a href="{{ url('services') }}">Услуги</a></li>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ path("post") }}">Создать пост</a></li>
+                            <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Админка<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url('admin/users') }}">Юзеры</a></li>
+                                    <li><a href="{{ path("post") }}">Создать пост</a></li>
+                                </ul>
+                            </li>
                         {% endif %}
                     </ul>
 

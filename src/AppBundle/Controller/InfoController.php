@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,6 @@ class InfoController extends Controller
      */
     public function infoAction($action, Request $request)
     {
-        $user = $request->getUser();
-
         $infoConfig = Yaml::parse(file_get_contents($this->get('kernel')->getRootDir().'/config/info_config.yml'));
 
         if(isset($infoConfig[$action])){
@@ -31,7 +30,11 @@ class InfoController extends Controller
 
             $title = isset($infoConfig[$action]['title'])?$infoConfig[$action]['title']:$action;
 
-            if($request->isMethod('post') && $user){
+            if($request->isMethod('post')){
+
+                if(!$this->get("security.authorization_checker")->isGranted("ROLE_ADMIN")){
+                    throw $this->createAccessDeniedException();
+                }
 
                 $contents = $request->get('page_value');
                 file_put_contents($filename, $contents);

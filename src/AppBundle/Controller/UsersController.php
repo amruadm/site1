@@ -28,6 +28,18 @@ class UsersController extends Controller
 		]);*/
 	}
 
+    /**
+     * @Route("/administration/users", name="admin/users")
+     */
+	public function usersAdminAction()
+    {
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+
+        return $this->render("users/users.html.twig", [
+            'users' => $users
+        ]);
+    }
+
 	/**
      * @Rest\Get("/api/users/{id}")
      */
