@@ -14,7 +14,7 @@ class MinecraftServersController extends Controller
      */
     public function getServers()
     {
-        $result = MinecraftServerStatus::query();
+        $result = MinecraftServerStatus::query("88.99.226.1");
         if($result === FALSE){
             return new View("Error", Response::HTTP_FORBIDDEN);
         }
