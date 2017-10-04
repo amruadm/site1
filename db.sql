@@ -24,16 +24,16 @@ DROP TABLE IF EXISTS `comment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `added_by` bigint(20) NOT NULL,
+  `added_by` bigint(20) DEFAULT NULL,
   `added_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `comm_text` text,
-  `post_id` int(11) NOT NULL,
+  `post_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fki_added_by_fkey` (`added_by`),
   KEY `fki_post_id_fkey` (`post_id`),
   CONSTRAINT `comm_added_by_fkey` FOREIGN KEY (`added_by`) REFERENCES `user` (`id`),
   CONSTRAINT `post_id_fkey` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (1,1,'2017-09-13 02:43:43','И комментик заодно затестил, работает збс :)',1),(5,3,'2017-09-17 01:28:43','ВОУ! ЭТО РАБОТАЕТ!',1);
+INSERT INTO `comment` VALUES (1,1,'2017-09-13 02:43:43','И комментик заодно затестил, работает збс :)',1),(5,3,'2017-09-17 01:28:43','ВОУ! ЭТО РАБОТАЕТ!',1),(11,1,'2017-09-26 02:46:01','Комменты, комменты, много комментов',4),(12,1,'2017-09-26 02:46:21','amruadm, lol',4);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,6 +179,9 @@ CREATE TABLE `user` (
   `uuid` char(36) DEFAULT NULL,
   `accessToken` char(32) DEFAULT NULL,
   `serverID` varchar(41) DEFAULT NULL,
+  `role` char(32) NOT NULL,
+  `email` varchar(32) NOT NULL,
+  `image` varchar(32) NOT NULL DEFAULT 'default.png',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_login_key` (`login`),
   UNIQUE KEY `uuid` (`uuid`)
@@ -191,37 +194,9 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'amruadm','b1b3773a05c0ed0176787a4f1574ff0075f7521e','2017-09-13 02:28:26','b8773e62-9893-11e7-8de1-3085a98ec2c8','1d0c9482b97173796fadd0114eb6eacb',NULL),(2,'lalka','b1b3773a05c0ed0176787a4f1574ff0075f7521e','2017-09-13 06:23:43','eac96c97-989f-11e7-8de1-3085a98ec2c8',NULL,NULL),(3,'Naman','89d9a4b444b7ec2f4697e889a765f007a0100da1','2017-09-17 01:27:46','3798693c-9b9b-11e7-8de1-3085a98ec2c8','860ee7914071d569254e7b2b6a48f29f','-746c2979ce021e8e1f776d5903ac74f3b5259812'),(4,'Joey','c9509125a9b664b82e101c871fb0c4f361f6bcfb','2017-09-18 00:45:13','7540d025-9c5e-11e7-a083-3085a98ec2c8','7f68adcd1ef6c7fa81fde2016b6aa6de',NULL);
+INSERT INTO `user` VALUES (1,'amruadm','b1b3773a05c0ed0176787a4f1574ff0075f7521e','2017-09-13 02:28:26','b8773e62-9893-11e7-8de1-3085a98ec2c8','1d0c9482b97173796fadd0114eb6eacb',NULL,'ROLE_ADMIN','','default.png'),(2,'lalka','b1b3773a05c0ed0176787a4f1574ff0075f7521e','2017-09-13 06:23:43','eac96c97-989f-11e7-8de1-3085a98ec2c8',NULL,NULL,'ROLE_USER','','default.png'),(3,'Naman','89d9a4b444b7ec2f4697e889a765f007a0100da1','2017-09-17 01:27:46','3798693c-9b9b-11e7-8de1-3085a98ec2c8','860ee7914071d569254e7b2b6a48f29f','-746c2979ce021e8e1f776d5903ac74f3b5259812','ROLE_ADMIN','','default.png'),(4,'Joey','c9509125a9b664b82e101c871fb0c4f361f6bcfb','2017-09-18 00:45:13','7540d025-9c5e-11e7-a083-3085a98ec2c8','7f68adcd1ef6c7fa81fde2016b6aa6de',NULL,'ROLE_ADMIN','','default.png');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER setUUID BEFORE INSERT ON user
-FOR EACH ROW BEGIN
-IF NEW.uuid IS NULL THEN
-SET NEW.uuid = UUID();
-END IF;
-END */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Dumping events for database 'public'
---
-
---
--- Dumping routines for database 'public'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -232,4 +207,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-24 23:35:31
+-- Dump completed on 2017-10-04 17:28:28
