@@ -8,6 +8,11 @@
     <id name="id" type="bigint" column="id">
       <generator strategy="IDENTITY"/>
     </id>
+    <field name="active" type="boolean" column="active" nullable="false">
+      <options>
+        <option name="fixed">false</option>
+      </options>
+    </field>
     <field name="role" type="string" column="role" length="32" nullable="false">
       <options>
         <option name="fixed">ROLE_USER</option>

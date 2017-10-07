@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,13 +18,19 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="active", type="boolean", nullable=false)
+     */
+    private $active = false;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="role", type="string", length=32, nullable=false)
      */
     private $role = 'ROLE_USER';
 
     /**
      * @var string
-     * @Assert\NotBlank(message="Please, upload the image")
      * @Assert\Image(
      *     minWidth = 128,
      *     maxWidth = 256,
@@ -33,7 +39,7 @@ class User implements UserInterface
      * )
      * @ORM\Column(name="image", type="string", length=32, nullable=true)
      */
-    private $image;
+    private $image = 'default.png';
 
     /**
      * @var string
@@ -277,9 +283,27 @@ class User implements UserInterface
         $this->role = $role;
     }
 
+    /**
+     * @return string
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param string $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+    }
+
     public function getRoles()
     {
-        return [$this->role];
+        if(!$this->active)
+            return [$this->role];
+        return [$this->role, 'ROLE_ACTIVE'];
     }
 
     public function getPassword()

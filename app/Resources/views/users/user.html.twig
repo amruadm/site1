@@ -30,4 +30,8 @@
         {% endif %}
     </table>
 
+    {% if not is_granted('ROLE_ACTIVE') %}
+        <span style="color: red">Ваш аккаунт не подтверждён</span> <a href="">(Не пришло сообщение)</a>
+    {% endif %}
+
 {% endblock %}

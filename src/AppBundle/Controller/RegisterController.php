@@ -20,17 +20,18 @@ class RegisterController extends Controller
 	/**
 	 * @Route("/register", name="register")
 	 */
-	public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+	public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer)
 	{
 
 		$user = new User();
 
 		$form = $this->createFormBuilder($user)
+            ->setAction($this->generateUrl('register'))
 			->add('login', TextType::class, ['label' => 'Логин'])
             ->add('email', EmailType::class, ['label' => 'E-Mail'])
 			->add('pass', PasswordType::class, ['label' => 'Пароль '])
 			->add('cpass', PasswordType::class, ['label' => 'Подтверждение', 'mapped' => false])
-            ->add('image', FileType::class, ['label' => 'Аватарка', 'required' => false])
+            ->add('image', FileType::class, ['label' => 'Аватарка', 'data_class' => null, 'required' => false])
 			->add('save', SubmitType::class, ['label' => 'Зарегаться'])
 			->getForm();
 
@@ -49,24 +50,42 @@ class RegisterController extends Controller
 
 				$user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
 
-                $file = $user->getImage();
+				if(!empty($user->getImage()) && $user->getImage() !== 'default.png'){
+                    $file = $user->getImage();
 
-                $dt = new \DateTime();
+                    $dt = new \DateTime();
 
-                $filename = 'picture'.$dt->format('YmdHisu').'.'.$file->guessExtension();
+                    $filename = 'picture'.$dt->format('YmdHisu').'.'.$file->guessExtension();
 
-                $file->move(
-                    $this->getParameter('avarats_uploads'),
-                    $filename
-                );
+                    $file->move(
+                        $this->getParameter('avarats_uploads'),
+                        $filename
+                    );
 
-                $user->setImage($filename);
+                    $user->setImage($filename);
+                }
+                else{
+                    $user->setImage('default.png');
+                }
 
 				try{
 					$em = $this->getDoctrine()->getManager();
 					$em->persist($user);
 					$em->flush();
-					return $this->redirectToRoute("homepage");
+
+					$message = (new \Swift_Message('Подтверждение'))
+                        ->setFrom("admin@craft-life.fun")
+                        ->setTo($user->getEmail())
+                        ->setBody($this->render("register/confirm_body.html.twig", [
+                            'hash' => hash('sha1', hash('md5', $user->getLogin())),
+                            'login' => $user->getLogin()
+                        ]), 'text/html');
+
+					if($mailer->send($message) == FALSE){
+					    return $this->render("woops.html.twig", ['reason' => 'свфитмаилер вернул ноль']);
+                    }
+
+					return $this->render("register/confirm_wait.html.twig");
 				}
 				catch(Exception $e){
 					$error_msg = "Введите другое имя пользователя";
@@ -82,4 +101,24 @@ class RegisterController extends Controller
 			'error' => $error_msg
 		]);
 	}
+
+	/**
+     * @Route("/confirm/{hash}")
+     */
+	function confirmAction($hash)
+    {
+        $repo = $this->getDoctrine()->getRepository(User::class);
+        $query = $repo->createQueryBuilder('u')->where('SHA1(MD5(u.login)) = :hash')
+            ->setParameter('hash', $hash)->getQuery();
+        $user = $query->setMaxResults(1)->getOneOrNullResult();
+        if(!$user)
+            throw $this->createNotFoundException("Error");
+        if(!$user->getActive()){
+            $user->setActive(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+        }
+        return $this->render("register/confirm.html.twig");
+    }
 }
