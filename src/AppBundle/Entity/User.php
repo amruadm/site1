@@ -303,7 +303,16 @@ class User implements UserInterface
     {
         if(!$this->active)
             return [$this->role];
-        return [$this->role, 'ROLE_ACTIVE'];
+        $rolesmap = [
+            'ROLE_ADMIN' => ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_ACTIVE'],
+            'ROLE_USER' => ['ROLE_USER', 'ROLE_ACTIVE']
+        ];
+        if(isset($rolesmap[$this->role])){
+            return $rolesmap[$this->role];
+        }
+        else{
+            return [];
+        }
     }
 
     public function getPassword()
