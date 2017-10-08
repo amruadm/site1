@@ -18,11 +18,6 @@
         <option name="fixed">ROLE_USER</option>
       </options>
     </field>
-    <field name="image" type="string" column="image" length="32" nullable="false">
-      <options>
-        <option name="default">default.png</option>
-      </options>
-    </field>
     <field name="email" type="string" column="email" length="32" nullable="false">
       <options>
         <option name="fixed"></option>

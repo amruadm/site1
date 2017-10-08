@@ -5,9 +5,27 @@
 {% endblock %}
 
 {% block body %}
-<div align="center">
+<div align="center" class="container">
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+
+    <div class="row">
+        <div class="col-sm-2">{{ form_label(form.login) }}</div>
+        <div class="col-sm-2">{{ form_widget(form.login) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">{{ form_label(form.email) }}</div>
+        <div class="col-sm-2">{{ form_widget(form.email) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">{{ form_label(form.pass) }}</div>
+        <div class="col-sm-2">{{ form_widget(form.pass) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">{{ form_label(form.cpass) }}</div>
+        <div class="col-sm-2">{{ form_widget(form.cpass) }}</div>
+    </div>
+    <div class="col-sm-2">{{ form_widget(form._token) }}</div>
+
     {{ form_end(form) }}
 </div>
 {% endblock %}

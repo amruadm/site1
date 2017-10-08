@@ -2,8 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\Minecraft\LoginUUIDEncoder;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +24,9 @@ class RegisterController extends Controller
 	/**
 	 * @Route("/register", name="register")
 	 */
-	public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder, \Swift_Mailer $mailer)
+	public function registerAction(Request $request,
+                                   UserPasswordEncoderInterface $passwordEncoder,
+                                   \Swift_Mailer $mailer)
 	{
 
 		$user = new User();
@@ -31,7 +37,6 @@ class RegisterController extends Controller
             ->add('email', EmailType::class, ['label' => 'E-Mail'])
 			->add('pass', PasswordType::class, ['label' => 'Пароль '])
 			->add('cpass', PasswordType::class, ['label' => 'Подтверждение', 'mapped' => false])
-            ->add('image', FileType::class, ['label' => 'Аватарка', 'data_class' => null, 'required' => false])
 			->add('save', SubmitType::class, ['label' => 'Зарегаться'])
 			->getForm();
 
@@ -49,24 +54,6 @@ class RegisterController extends Controller
                 $errors = $validator->validate($user);
 
 				$user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
-
-				if(!empty($user->getImage()) && $user->getImage() !== 'default.png'){
-                    $file = $user->getImage();
-
-                    $dt = new \DateTime();
-
-                    $filename = 'picture'.$dt->format('YmdHisu').'.'.$file->guessExtension();
-
-                    $file->move(
-                        $this->getParameter('avarats_uploads'),
-                        $filename
-                    );
-
-                    $user->setImage($filename);
-                }
-                else{
-                    $user->setImage('default.png');
-                }
 
 				try{
 					$em = $this->getDoctrine()->getManager();
@@ -108,17 +95,31 @@ class RegisterController extends Controller
 	function confirmAction($hash)
     {
         $repo = $this->getDoctrine()->getRepository(User::class);
+
         $query = $repo->createQueryBuilder('u')->where('SHA1(MD5(u.login)) = :hash')
             ->setParameter('hash', $hash)->getQuery();
         $user = $query->setMaxResults(1)->getOneOrNullResult();
+
         if(!$user)
-            throw $this->createNotFoundException("Error");
-        if(!$user->getActive()){
-            $user->setActive(true);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-        }
+            return $this->redirectToRoute("homepage");
+        if($user->getActive())
+            return $this->redirectToRoute("homepage");
+
+        $user->setActive(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
         return $this->render("register/confirm.html.twig");
     }
+/*
+    /**
+     * @Rest/Post("/api/tryconfirm/{id}")
+     */
+    /*function tryconfirmAction(User $user)
+    {
+        if($user->getActive())
+            return new View("User is activated", Response::HTTP_FORBIDDEN);
+
+
+    }*/
 }

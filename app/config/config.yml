@@ -10,6 +10,8 @@ parameters:
     image_uploads: '%kernel.project_dir%/web/img/uploads/'
     page_uploads: '%kernel.project_dir%/uploads/pages/'
     avarats_uploads: '%kernel.project_dir%/web/img/uploads/ava/'
+    skins_path: '%kernel.project_dir%/web/img/uploads/skins/'
+    cloak_path: '%kernel.project_dir%/web/img/uploads/cloaks/'
 
 framework:
     #esi: ~

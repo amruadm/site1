@@ -160,6 +160,10 @@ a.navbar-brand:visited{
 	padding: 10px;
 }
 
+.skin-image{
+	
+}
+
 @keyframes added {
 	from {
 		opacity: 0;

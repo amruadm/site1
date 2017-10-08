@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="users_login_key", columns={"login"})})
  * @ORM\Entity(repositoryClass="UserRepository")
+ * @UniqueEntity(
+ *     fields={"login", "email"},
+ *     errorPath="homepage",
+ *     message="This port is already in use on that host."
+ * )
  */
 class User implements UserInterface
 {
@@ -31,20 +36,8 @@ class User implements UserInterface
 
     /**
      * @var string
-     * @Assert\Image(
-     *     minWidth = 128,
-     *     maxWidth = 256,
-     *     minHeight = 128,
-     *     maxHeight = 256
-     * )
-     * @ORM\Column(name="image", type="string", length=32, nullable=true)
-     */
-    private $image = 'default.png';
-
-    /**
-     * @var string
      *
-     * @ORM\Column(name="email", type="string", length=24, nullable=false)
+     * @ORM\Column(name="email", type="string", length=24, nullable=false, unique=true)
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email.",
      *     checkMX = true
@@ -55,7 +48,14 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="login", type="string", length=16, nullable=false)
+     * @ORM\Column(name="login", type="string", length=16, nullable=false, unique=true)
+     * @Assert\Regex("/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/")
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 16,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $login;
 
@@ -125,22 +125,6 @@ class User implements UserInterface
         $this->login = $login;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param string $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
     }
 
     /**
