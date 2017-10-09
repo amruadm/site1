@@ -1,34 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-    <div ng-controller="postController" ng-init="getComments({{ post.id }});">
-        <h1>{{ post.title }}</h1>
-        <img src="/img/uploads/{{ post.image }}" width="100%"/>
-        <p>
-            {{ post.body }}
-        </p>
-        <p><b>Комментарии</b></p>
-        {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
-            <div>
-                Добавить комментарий<br />
-                <textarea class="form-control" id="comm_add_text" style="min-width: 300px;" ng-model="comment_add"></textarea> <br />
-                <button class="btn btn-info" ng-click="addComment({{ post.id }});">Добавить</button>
+    <div class="panel primary-panel body-panel">
+        <div ng-controller="postController" ng-init="getComments({{ post.id }});">
+            <h1>{{ post.title }}</h1>
+            <img src="/img/uploads/{{ post.image }}" width="100%"/>
+            <p>
+                {{ post.body }}
+            </p>
+            <p><b>Комментарии</b></p>
+            {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
+                <div>
+                    Добавить комментарий<br />
+                    <textarea class="form-control" id="comm_add_text" style="min-width: 300px;" ng-model="comment_add"></textarea> <br />
+                    <button class="btn btn-info" ng-click="addComment({{ post.id }});">Добавить</button>
+                </div>
+            {% else %}
+                <b style="color: #ffbf00;">Залогинтесь или <a href="{{ url('register') }}">зарегистрируйтесь</a> что бы оставлять комментарии</b>
+            {% endif %}
+            <br />
+            <div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
+                <div class="panel-heading">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
+                    {% endif %}
+                    {[{ comment.added_date | date: 'yyyy-MM-dd HH:mm' }]}
+                    <b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
+                </div>
+                <div class="panel-body">{[{ comment.comm_text }]}</div>
             </div>
-        {% else %}
-            <b style="color: #ffbf00;">Залогинтесь или <a href="{{ url('register') }}">зарегистрируйтесь</a> что бы оставлять комментарии</b>
-        {% endif %}
-        <br />
-        <div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
-            <div class="panel-heading">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
-                {% endif %}
-                {[{ comment.added_date | date: 'yyyy-MM-dd HH:mm' }]}
-                <b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
-            </div>
-            <div class="panel-body">{[{ comment.comm_text }]}</div>
         </div>
     </div>
-
 {% endblock %}

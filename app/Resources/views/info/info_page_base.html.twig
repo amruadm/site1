@@ -5,24 +5,22 @@
     <script type="text/javascript" src="{{ asset('/ext/wysiwyg/bootstrap-wysiwyg.js') }}"></script>
     <script src="{{ asset('/ext/wysiwyg/external/google-code-prettify/prettify.js') }}"></script>
     <link href="{{ asset('/ext/wysiwyg/index.css') }}" rel="stylesheet">
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
 
 {% endblock %}
 
-{% block body_header %}
-    {{ title }}
-{% endblock %}
-
 {% block body %}
-    <div id="info_body">
-        {% include 'info/'~action~'.html' %}
+    <div class="panel primary-panel body-panel">
+        <h1 align="center" class="body-header">{{ title }}</h1>
+        <div id="info_body">
+            {% include 'info/'~action~'.html' %}
+        </div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <form method="post" id="eidt_form" action="">
+                {% include 'ext/richedit.html.twig' with {'form_id': 'eidt_form'} %}
+                <br />
+                <button type="submit">Сохранить</button>
+            </form>
+        {% endif %}
     </div>
-    {% if is_granted('ROLE_ADMIN') %}
-        <form method="post" id="eidt_form" action="">
-            {% include 'ext/richedit.html.twig' with {'form_id': 'eidt_form'} %}
-            <br />
-            <button type="submit">Сохранить</button>
-        </form>
-    {% endif %}
 {% endblock %}

@@ -1,37 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block body_header %}
-    Профиль
-{% endblock %}
-
 {% block body %}
-    <table class="table">
-        <tr>
-            <td><img class="skin-image" src="{{ asset(skin) }}" width="200px" /></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Пользователь</td>
-            <td>{{ user.login }}</td>
-        </tr>
-        <tr>
-            <td>Дата реистрации</td>
-            <td>{{ user.regdate | date('Y-m-d H:i') }}</td>
-        </tr>
-        {% if is_granted('ROLE_ADMIN') %}
+    <div class="panel primary-panel body-panel">
+        <h1 align="center" class="body-header">Профиль</h1>
+        <table class="table">
             <tr>
-                <td>Роль</td>
-                <td>{{ user.role }}</td>
+                <td><img class="skin-image" src="{{ asset(skin) }}" width="200px" /></td>
+                <td></td>
             </tr>
             <tr>
-                <td>uuid</td>
-                <td>{{ user.uuid }}</td>
+                <td>Пользователь</td>
+                <td>{{ user.login }}</td>
             </tr>
-        {% endif %}
-    </table>
+            <tr>
+                <td>Дата реистрации</td>
+                <td>{{ user.regdate | date('Y-m-d H:i') }}</td>
+            </tr>
+            {% if is_granted('ROLE_ADMIN') %}
+                <tr>
+                    <td>Роль</td>
+                    <td>{{ user.role }}</td>
+                </tr>
+                <tr>
+                    <td>uuid</td>
+                    <td>{{ user.uuid }}</td>
+                </tr>
+            {% endif %}
+        </table>
 
-    {% if not is_granted('ROLE_ACTIVE') %}
-        <span style="color: red">Ваш аккаунт не подтверждён</span> <a href="">(Не пришло сообщение)</a>
-    {% endif %}
+        {% if not is_granted('ROLE_ACTIVE') %}
+            <span style="color: red">Ваш аккаунт не подтверждён</span> <a href="">(Не пришло сообщение)</a>
+        {% endif %}
+    </div>
 
 {% endblock %}

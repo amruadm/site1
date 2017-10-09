@@ -8,7 +8,6 @@
 	<div ng-controller="postController">
 		<div class="panel panel-default news-panel" style="border: 0px;" ng-repeat="post in posts">
 			<div class="panel-heading">
-				<span class="header-number">{[{ post.added_date | date: 'yyyy-MM-dd' }]}</span>&nbsp;
 				<span class="post-title">{[{ post.title }]}</span>
 			</div>
 			<div class="panel-body" style="padding: 0px;">
@@ -16,46 +15,22 @@
 				<p>
 					{[{ post.body }]}
 				</p>
+				<div class="col-sm-4"></div>
+				<div class="col-sm-8 text-right" style="margin-bottom: 10px;">
+					<button class="btn btn-page" ng-click="viewPost(post.id);">Подробности</button>
+				</div>
 			</div>
-			<div class="panel-footer">
+			<div class="panel-footer" style="height: 40px; padding: 10px">
 				<div class="row">
 					<div class="col-sm-4">
 						Добавил: {[{ post.added_by.login }]}
 					</div>
 					<div class="col-sm-8 text-right">
-						<button class="btn btn-info btn-lg" ng-click="viewPost(post.id);">Подробности</button>
+						Дата: {[{ post.added_date | date: 'yyyy-MM-dd' }]}
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<!--<h2>{[{ currentPost.title }]}</h2>
-		<div>
-			<hr />
-			{[{ currentPost.body }]}
-		</div>
-
-		<br /><p style="font-size: 11pt;">Добавил: <b>{[{ currentPost.added_by.login }]}</b></p>
-
-		<hr/>
-		{% if is_granted('IS_AUTHENTICATED_FULLY')  %}
-			<div>
-				Добавить комментарий<br />
-				<textarea class="form-control" id="comm_add_text" style="min-width: 300px;" ng-model="comment_add"></textarea> <br />
-				<button ng-click="addComment();">Добавить</button>
-			</div>
-		{% endif %}
-		<p><b>Комментарии</b></p>
-		<div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
-			<div class="panel-heading">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-					<a ng-click="removeComment(comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
-                {% endif %}
-				{[{ comment.added_date | date: 'yyyy-MM-dd HH:mm' }]}
-				<b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
-			</div>
-			<div class="panel-body">{[{ comment.comm_text }]}</div>
-		</div>-->
 	</div>
 {% endblock %}
 

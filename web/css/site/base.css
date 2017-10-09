@@ -18,10 +18,10 @@
 }
 
 nav.navbar{
-	width: 70%;
-	background-color: rgb(252,252,252);;
+	width: 1200px;
+	background-color: rgb(252,252,252);
 	padding: 0px;
-	box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.5), 0 30px 20px 0 rgba(0, 0, 0, 0.19);
+	/*box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.5), 0 30px 20px 0 rgba(0, 0, 0, 0.19);*/
 	border-width: 0px;
 }
 
@@ -42,16 +42,26 @@ nav.navbar{
 }
 
 .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
-	background-color: #a86700;
+	background-color: #ffbf00;
 }
 
 .dropdown-menu{
-	background-color: #db9848;
+	background-color: #ffbf00;
 }
 
 .dropdown-menu li a:hover{
-	background-color: #ffd86d;
+	background-color: #ffbf00;
 	color: white;
+}
+
+.btn.btn-info.btn-lg{
+	color: #ff9400;
+	background-color: Transparent;
+	background-repeat:no-repeat;
+	border: none;
+	cursor:pointer;
+	overflow: hidden;
+	outline:none;
 }
 
 .btn{
@@ -60,18 +70,13 @@ nav.navbar{
 
 .download-btn{
 	color: white;
-	font-size: 15pt;
-	/*background-color: #66dd66;*/
-	background: linear-gradient(to top, #82c66f, #a5ff8c);
-	background-size: 100%;
-	background-repeat: repeat-x;
-	background-position: center;
-	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	font-size: 14pt;
+	background-color: #ffbf00;
+	width: 100%;
 }
 
 .download-btn:hover{
-	color: #f8f9fa;
-	box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.5);
+	background-color: #dda500;
 }
 
 #clNavbar{
@@ -87,7 +92,7 @@ a.navbar-brand:visited{
 }
 
 .body-main{
-	/*background-color: #d9edf7;*/
+
 }
 
 .site-block{
@@ -101,7 +106,7 @@ a.navbar-brand:visited{
 }
 
 .post-title{
-	font-size: 14pt;
+	font-size: 15pt;
 }
 
 .post-image{
@@ -109,8 +114,7 @@ a.navbar-brand:visited{
 }
 
 .upper-panel{
-	background-color: #ba6600;
-	background-image: url("/img/style/HEAD.png");
+	background-color: #ffbf00;
 	background-repeat: no-repeat;
 	width: 100%;
 	height: 80px;
@@ -120,7 +124,11 @@ a.navbar-brand:visited{
 .primary-panel{
 	padding: 3%;
 	background-color: rgb(252,252,252);
-	box-shadow: 0 12px 50px 0 rgba(0, 0, 0, 0.5), 0 30px 20px 0 rgba(0, 0, 0, 0.19);
+	border-radius: 0px;
+}
+
+.body-panel{
+
 }
 
 .footer-panel{
@@ -129,7 +137,6 @@ a.navbar-brand:visited{
 
 .news-panel{
 	border-radius: 0px;
-	box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2), 0 8px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .news-panel p{
@@ -137,13 +144,13 @@ a.navbar-brand:visited{
 }
 
 .btn-info {
-	background-color: #ffee60;
+	background-color: #ffbf00;
 	color: black;
 	border: hidden;
 }
 
 .btn-info:hover{
-	background-color: #ffe066;
+	background-color: #dda500;
 }
 
 .btn-info:focus{
@@ -156,12 +163,23 @@ a.navbar-brand:visited{
 	border: hidden;
 }
 
+.btn-info.btn-sm{
+	font-size: 10pt;
+	color: white;
+}
+
+.btn-page{
+	background-color: #ffd000;
+	font-size: 15pt;
+	color: white;
+}
+
 .container{
 	padding: 10px;
 }
 
 .skin-image{
-	
+
 }
 
 @keyframes added {
