@@ -31,6 +31,16 @@ class CommentController extends Controller
     }
 
     /**
+     * @Rest\Get("/api/comments/count/{id}")
+     */
+    public function getCountAction($id)
+    {
+        return $this->getDoctrine()->getManager("AppBundle:Comment")->createQueryBuilder()
+            ->select("count(comment.id)")->from("AppBundle:Comment", "comment")->where("comment.postId=:post_id")->setParameter("post_id", $id)
+            ->getQuery()->getSingleScalarResult();
+    }
+
+    /**
      * @Rest\Post("/api/comment")
      * @Security("has_role('ROLE_USER')")
      */

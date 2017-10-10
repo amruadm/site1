@@ -10,6 +10,8 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/site/base.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/angular.min.js') }}"></script>
@@ -23,13 +25,8 @@
     <body ng-app="mainApp">
         <div class="background-image"></div>
         <nav class="navbar navbar-inverse center-block">
-            <div class="container upper-panel">
-                <span style="font-size: 30pt; color: white;">CRAFT-LIFE</span>
-            </div>
-            <div class="container-fluid">
-                <!--<div class="navbar-header">
-                    <a class="navbar-brand" href="/">CRAFT-LIFE</a>
-                </div>-->
+            <div class="container upper-panel"></div>
+            <div class="container-fluid" style="border-top: 1px solid; border-color: #834824;">
                 <div class="collapse navbar-collapse" id="clNavbar">
                     <ul class="nav navbar-nav">
                         <li><a href="/">Главная</a></li>
@@ -90,7 +87,7 @@
                 <div class="col-sm-4">
                     <div ng-controller="serversController" class="primary-panel" style="width: 375px;">
                         <div align="center">
-                            <button type="button" class="btn btn-lg download-btn" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Скачать лаунчер</button>
+                            <button type="button" class="btn btn-lg download-btn" style="width: 100%;" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Скачать лаунчер</button>
                         </div>
                         <br />
                         <span style="font-size: 20pt; color: #ff9400">Сервера</span><hr/>

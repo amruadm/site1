@@ -16,18 +16,19 @@
 					{[{ post.body }]}
 				</p>
 				<div class="col-sm-4"></div>
-				<div class="col-sm-8 text-right" style="margin-bottom: 10px;">
-					<button class="btn btn-page" ng-click="viewPost(post.id);">Подробности</button>
-				</div>
 			</div>
-			<div class="panel-footer" style="height: 40px; padding: 10px">
-				<div class="row">
-					<div class="col-sm-4">
-						Добавил: {[{ post.added_by.login }]}
+			<div class="panel-footer" style="padding-right: 0px; padding-top: 0px;">
+				<span class="panel-footer-addedby">
+					<i class="fa fa-user-circle w3-large"></i> <b><a href="/user/{[{ post.added_by.id }]}">{[{ post.added_by.login }]}</a></b>
+				</span>
+				<div style="float: right; margin-right: 0px;">
+					<div class="panel-footer-date">
+						<i class="fa fa-calendar w3-large"></i>
+						<span style="font-size: 12pt;">&nbsp;<b>{[{ post.added_date | date: 'dd.MM.yyyy' }]} в {[{ post.added_date | date: 'HH:mm' }]}</b></span>
 					</div>
-					<div class="col-sm-8 text-right">
-						Дата: {[{ post.added_date | date: 'yyyy-MM-dd' }]}
-					</div>
+					<button class="btn download-btn" style="height: 49px;" ng-click="viewPost(post.id);">
+						<b>Подробнее</b> <i class="fa fa-caret-square-o-right fa-1x"></i>
+					</button>
 				</div>
 			</div>
 		</div>
