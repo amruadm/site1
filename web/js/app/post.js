@@ -13,6 +13,7 @@ myApp.controller('postController', ['$scope', '$http', function($scope, $http){
     $scope.getComments = function (id) {
         $http.get('/api/comments/'+id, {}).then(function(response) {
             $scope.postComments = response.data;
+            $scope.commentsNum = response.data.length;
         });
     }
 
