@@ -117,13 +117,9 @@ class UsersController extends Controller
 	/**
      * @Rest\Get("/api/users/{id}")
      */
-	public function idAction($id)
+	public function idAction(User $user)
     {
-        $resultUser = $this->getDoctrine()->getManager("AppBundle:User")->find($id);
-        if(!isset($resultUser)){
-            return new View("User not found", Response::HTTP_NOT_FOUND);
-        }
-        return $resultUser;
+        return $user;
     }
 
     /**

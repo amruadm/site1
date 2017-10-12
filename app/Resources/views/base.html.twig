@@ -31,13 +31,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="/">Главная</a></li>
                         <li><a href="{{ url('work_in_progress') }}">Форум</a></li>
-                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Сервера<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url('info', {'action': 'server-classic'}) }}">Classic</a></li>
-                                <li><a href="{{ url('info', {'action': 'server-mini-games'}) }}">Mini-Games</a></li>
-                            </ul>
-                        </li>
-                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Информация<span class="caret"></span></a>
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Информация<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{{ url('info', {'action': 'commands'}) }}">Игровые команды</a></li>
                                 <li><a href="{{ url('info', {'action': 'faq'}) }}">FAQ</a></li>
@@ -48,21 +42,26 @@
                         </li>
                         <li><a href="{{ url('info', {'action': 'rules'}) }}">Правила</a></li>
                         <li><a href="{{ url('services') }}">Услуги</a></li>
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Админка<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{{ url('admin/users') }}">Юзеры</a></li>
-                                    <li><a href="{{ path("post") }}">Создать пост</a></li>
-                                </ul>
-                            </li>
-                        {% endif %}
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>{{app.user.login}}<span class="caret"></span></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{ url('userpage', {'id': app.user.id}) }}">Профиль</a></li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <li><hr /></li>
+                                    <li><a href="{{ url('admin/users') }}">Юзеры</a></li>
+                                    <li><a href="{{ path("post") }}">Создать пост</a></li>
+                                    {% endif %}
+                                    <li><hr /></li>
+                                    <li><a href="{{ logout_path('main') }}">Выход</a></li>
+                                </ul>
+                            </li>
                             <li>
-                                <a style="font-size: 14pt; display: inline;" href="{{ url('userpage', {'id': app.user.id}) }}">{{app.user.username}}</a>
-                                <button type="button" class="btn btn-info btn-lg" onclick="window.location='{{ logout_path('main') }}'">Выход</button>
+                                <div class="skin-image-sm" style="margin-top: 10px; margin-left: 10px; transform: scale(1.3); background-image: url('{{ app.user.skin }}');">
+                                </div>
                             </li>
                         {% else %}
                             <li>
@@ -96,7 +95,7 @@
                                 <td><p ng-bind-html="description"></p></td>
                                 <td>
                                     <span style="font-size: 14pt;">{[{players}]} / {[{maxPlayers}]}</span>
-                                    &nbsp;<button class="btn-info btn-sm">Info</button>
+                                    &nbsp;<button class="btn-info btn-sm" onclick="location.href='{{ url('info', {'action': 'server-classic'}) }}'; ">Info</button>
                                 </td>
                             </tr>
                             <tr>
@@ -144,6 +143,27 @@
             </div>
         </div>
 
+        <script type="application/javascript">
+            $(document).ready(function(){
+
+                //Simple nav links
+                $('ul.nav>li:not(.dropdown)').hover(function(){
+                    $(this).addClass('open');
+                }, function(){
+                    $(this).removeClass('open');
+                });
+
+                //Dropdown nav links
+                $('ul.nav>li.dropdown').hover(function() {
+                    $(this).addClass('active');
+                    $(this).find('.dropdown-menu').animate({height: "toggle"}, 100);
+                }, function() {
+                    $(this).removeClass('active');
+                    $(this).removeClass('open');
+                    $(this).find('.dropdown-menu').animate({height: "toggle"}, 100);
+                });
+            });
+        </script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

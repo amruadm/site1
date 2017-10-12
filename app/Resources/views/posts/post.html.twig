@@ -20,7 +20,7 @@
             <div>
                 <b><span style="color: #ffbf00;">Добавить комментарий</span></b>
                 <br />
-                <textarea class="form-control" id="comm_add_text" style="min-width: 300px;" ng-model="comment_add"></textarea> <br />
+                <textarea class="form-control" id="comm_add_text" style="width: 100%; height: 80px; resize: none;" ng-model="comment_add"></textarea> <br />
                 <button class="btn btn-info" ng-click="addComment({{ post.id }});">Добавить</button>
             </div>
         {% else %}
@@ -29,11 +29,12 @@
         <br />
         <div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
             <div class="panel-heading">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
-                {% endif %}
+                <div class="skin-image-sm" style="background-image: url({[{ comment.added_by.skin }]});"></div>
                 <b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
                 {[{ comment.added_date | date: 'dd.MM.yyyy в HH:mm' }]}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a style="float: right;" ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
+                {% endif %}
             </div>
             <div class="panel-body">{[{ comment.comm_text }]}</div>
         </div>

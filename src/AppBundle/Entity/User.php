@@ -3,9 +3,11 @@
 namespace AppBundle\Entity;
 
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * User
@@ -17,6 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     errorPath="homepage",
  *     message="This port is already in use on that host."
  * )
+ * @Serializer\AccessType("public_method")
  */
 class User implements UserInterface
 {
@@ -317,5 +320,18 @@ class User implements UserInterface
     public function eraseCredentials()
     {
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getSkin()
+    {
+        $skinsDir = __DIR__.'/../../../../web/img/uploads/skins/';
+        if(!file_exists($skinsDir.$this->login.'.png'))
+        {
+            return '/img/uploads/defaultSkin.png';
+        }
+        return '/img/uploads/skins/'.$this->login.'.png';
     }
 }

@@ -1,11 +1,15 @@
 AppBundle\Entity\User:
     exclusion_policy: ALL
+    virtual_properties:
+        getSkin:
+            serialized_name: skin
+            type: string
     properties:
         id:
             expose: true
         login:
             expose: true
-        reg_date:
+        regDate:
             expose: true
         serverID:
             expose: true

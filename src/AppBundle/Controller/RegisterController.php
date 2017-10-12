@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Service\Minecraft\LoginUUIDEncoder;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
+use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
@@ -37,6 +38,7 @@ class RegisterController extends Controller
             ->add('email', EmailType::class, ['label' => 'E-Mail'])
 			->add('pass', PasswordType::class, ['label' => 'Пароль '])
 			->add('cpass', PasswordType::class, ['label' => 'Подтверждение', 'mapped' => false])
+            ->add('capcha', CaptchaType::class, ['label' => 'Капча', 'mapped' => false])
 			->add('save', SubmitType::class, ['label' => 'Зарегаться'])
 			->getForm();
 

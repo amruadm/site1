@@ -44,19 +44,17 @@ nav.navbar{
 .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
 	background-color: #ffbf00;
 }
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+	background-color: #ffbf00;
+}
 
 ul.dropdown-menu li a:hover{
 	background-color: #834824;
 	color: white;
 }
 
-.dropdown-menu{
+ul.dropdown-menu{
 	background-color: #ffbf00;
-}
-
-.dropdown-menu li a:hover{
-	background-color: #ffbf00;
-	color: white;
 }
 
 .btn.btn-info.btn-lg{
@@ -82,6 +80,10 @@ ul.dropdown-menu li a:hover{
 .download-btn:hover{
 	background-color: #834824;
 	color: white;
+}
+
+.btn:focus{
+	outline: none;
 }
 
 #clNavbar{
@@ -161,7 +163,7 @@ a.navbar-brand:visited{
 
 .btn-info:focus{
 	background-color: #ffbf00;
-	border: hidden;
+	outline: none;
 }
 
 .btn-info:active{
@@ -190,9 +192,37 @@ a.navbar-brand:visited{
 	background-position: -32px -32px;
 	transform: scale(3);
 	margin: 32px;
+
+	image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+	image-rendering: -moz-crisp-edges;          /* Firefox                        */
+	image-rendering: -o-crisp-edges;            /* Opera                          */
+	image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+	image-rendering: pixelated; /* Chrome */
+	image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+	-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 	/*background-size: 0.125% 0.25%;
 	background-repeat: no-repeat;*/
 }
+
+.skin-image-sm{
+	width:32px;
+	height:32px;
+	background-position: -32px -32px;
+	transform: scale(1);
+	margin-top: -5px;
+	margin-right: 10px;
+	margin-left: -8px;
+	float: left;
+
+	image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+	image-rendering: -moz-crisp-edges;          /* Firefox                        */
+	image-rendering: -o-crisp-edges;            /* Opera                          */
+	image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+	image-rendering: pixelated; /* Chrome */
+	image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+	-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
 /*.skin-image img{
 	margin:0;
 	position:absolute;
@@ -232,11 +262,18 @@ a.navbar-brand:visited{
 }
 
 .comment .panel-heading{
-	background-color: #ffbf00;;
+	background-color: #ffbf00;
 }
 
 .comment .panel-body{
 	background-color: rgb(252,252,252);
+}
+
+hr{
+	border: none;
+	color: #834824;
+	background-color: #834824;
+	height: 1px;
 }
 
 @keyframes added {

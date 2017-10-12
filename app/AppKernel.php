@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new AppBundle\AppBundle(),
+            new Gregwar\CaptchaBundle\GregwarCaptchaBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
