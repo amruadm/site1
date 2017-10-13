@@ -9,6 +9,7 @@ use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,22 +48,22 @@ class RegisterController extends Controller
 		$error_msg = "";
 
 		if($form->get("cpass")->getData() == $form->get("pass")->getData()){
-			if($form->isSubmitted() && $form->isValid()){
+            if ($form->isSubmitted() && $form->isValid()) {
 
                 $validator = $this->get('validator');
 
-				$user = $form->getData();
+                $user = $form->getData();
 
                 $errors = $validator->validate($user);
 
-				$user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
+                $user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
 
-				try{
-					$em = $this->getDoctrine()->getManager();
-					$em->persist($user);
-					$em->flush();
+                try {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
 
-					$message = (new \Swift_Message('Подтверждение'))
+                    $message = (new \Swift_Message('Подтверждение'))
                         ->setFrom("admin@craft-life.fun")
                         ->setTo($user->getEmail())
                         ->setBody($this->render("register/confirm_body.html.twig", [
@@ -70,16 +71,15 @@ class RegisterController extends Controller
                             'login' => $user->getLogin()
                         ]), 'text/html');
 
-					if($mailer->send($message) == FALSE){
-					    return $this->render("woops.html.twig", ['reason' => 'свфитмаилер вернул ноль']);
+                    if ($mailer->send($message) == FALSE) {
+                        return $this->render("woops.html.twig", ['reason' => 'свфитмаилер вернул ноль']);
                     }
 
-					return $this->render("register/confirm_wait.html.twig");
-				}
-				catch(Exception $e){
-					$error_msg = "Введите другое имя пользователя";
-				}
-			}
+                    return $this->render("register/confirm_wait.html.twig");
+                } catch (Exception $e) {
+                    $error_msg = "Введите другое имя пользователя";
+                }
+            }
 		}
 		else{
 			$error_msg = "Пароли не совпадают";
