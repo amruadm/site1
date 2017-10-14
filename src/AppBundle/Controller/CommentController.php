@@ -4,16 +4,10 @@ namespace AppBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Post;
@@ -24,9 +18,9 @@ class CommentController extends Controller
     /**
      * @Rest\Get("/api/comments/{id}")
      */
-    public function getAction($id)
+    public function getAction(Post $post)
     {
-        $posts = $this->getDoctrine()->getRepository("AppBundle:Comment")->findBy(['post' => $id],['addedDate' => 'DESC'],20);
+        $posts = $this->getDoctrine()->getRepository("AppBundle:Comment")->findBy(['post' => $post->getId()],['addedDate' => 'DESC'],20);
         return $posts;
     }
 
@@ -41,28 +35,26 @@ class CommentController extends Controller
     }
 
     /**
-     * @Rest\Post("/api/comment")
+     * @Rest\Post("/api/comment/{id}")
      * @Security("has_role('ROLE_USER')")
      */
-    function postAction(Request $request)
+    function postAction(Post $post, Request $request)
     {
         $user = $this->getUser();
-
-        $id = $request->get("post_id");
-        $targetPost = $this->getDoctrine()->getRepository("AppBundle:Post")->find($id);
-        if(!isset($targetPost)){
-            return new View("Post doesnt exists",Response::HTTP_BAD_REQUEST);
-        }
-
-        if(empty($request->get("comm_text"))){
-            return new View("Comment text is empty",Response::HTTP_BAD_REQUEST);
-        }
 
         $comment = new Comment();
 
         $comment->setAddedBy($user);
-        $comment->setPost($targetPost);
+        $comment->setPost($post);
         $comment->setCommText($request->get("comm_text"));
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($comment);
+
+        if(count($errors) > 0)
+        {
+            return new View($errors, Response::HTTP_BAD_REQUEST);
+        }
 
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($comment);
@@ -75,12 +67,12 @@ class CommentController extends Controller
      * @Rest\Delete("/api/comment/{id}")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    function deleteAction(\AppBundle\Entity\Comment $comment)
+    function deleteAction(Comment $comment)
     {
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($comment);
         $manager->flush();
 
-        return new View("Deleted");
+        return new View("Deleted", Response::HTTP_OK);
     }
 }

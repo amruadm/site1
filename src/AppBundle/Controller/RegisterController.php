@@ -2,18 +2,16 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Service\Minecraft\LoginUUIDEncoder;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -35,59 +33,77 @@ class RegisterController extends Controller
 
 		$form = $this->createFormBuilder($user)
             ->setAction($this->generateUrl('register'))
-			->add('login', TextType::class, ['label' => 'Логин'])
+			->add('login', TextType::class, ['label' => 'Имя пользователя'])
             ->add('email', EmailType::class, ['label' => 'E-Mail'])
 			->add('pass', PasswordType::class, ['label' => 'Пароль '])
 			->add('cpass', PasswordType::class, ['label' => 'Подтверждение', 'mapped' => false])
-            ->add('capcha', CaptchaType::class, ['label' => 'Капча', 'mapped' => false])
-			->add('save', SubmitType::class, ['label' => 'Зарегаться'])
+            ->add('capcha', CaptchaType::class, ['label' => 'Введите код с картинки', 'mapped' => false, 'invalid_message' => 'Неверный код с картинки'])
+			->add('save', SubmitType::class, ['label' => 'Готово', 'attr' => ['class' => 'btn btn-info']])
 			->getForm();
 
 		$form->handleRequest($request);
 
-		$error_msg = "";
+		$error_msg = [];
 
-		if($form->get("cpass")->getData() == $form->get("pass")->getData()){
-            if ($form->isSubmitted() && $form->isValid()) {
+		try
+        {
+            if ($form->get("cpass")->getData() == $form->get("pass")->getData())
+            {
+                if ($form->isSubmitted())
+                {
+                    if ($form->isValid())
+                    {
 
-                $validator = $this->get('validator');
+                        $validator = $this->get('validator');
 
-                $user = $form->getData();
+                        $user = $form->getData();
 
-                $errors = $validator->validate($user);
+                        $errors = $validator->validate($user);
 
-                $user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
+                        $user->setPass($passwordEncoder->encodePassword($user, $user->getPass()));
 
-                try {
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($user);
-                    $em->flush();
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($user);
+                        $em->flush();
 
-                    $message = (new \Swift_Message('Подтверждение'))
-                        ->setFrom("admin@craft-life.fun")
-                        ->setTo($user->getEmail())
-                        ->setBody($this->render("register/confirm_body.html.twig", [
-                            'hash' => hash('sha1', hash('md5', $user->getLogin())),
-                            'login' => $user->getLogin()
-                        ]), 'text/html');
+                        $message = (new \Swift_Message('Подтверждение'))
+                            ->setFrom("admin@craft-life.fun")
+                            ->setTo($user->getEmail())
+                            ->setBody($this->render("register/confirm_body.html.twig", [
+                                'hash' => hash('sha1', hash('md5', $user->getLogin())),
+                                'login' => $user->getLogin()
+                            ]), 'text/html');
 
-                    if ($mailer->send($message) == FALSE) {
-                        return $this->render("woops.html.twig", ['reason' => 'свфитмаилер вернул ноль']);
+                        $mailer->send($message);
+
+                        return $this->render("register/confirm_wait.html.twig", [
+                            'user' => $user
+                        ]);
                     }
-
-                    return $this->render("register/confirm_wait.html.twig");
-                } catch (Exception $e) {
-                    $error_msg = "Введите другое имя пользователя";
+                    else
+                    {
+                        $errs = $form->getErrors(true);
+                        $error_msg = [];
+                        foreach($errs as $err)
+                        {
+                            $error_msg[] = $err->getMessage();
+                        }
+                    }
                 }
             }
-		}
-		else{
-			$error_msg = "Пароли не совпадают";
-		}
+            else
+            {
+                $error_msg[] = 'Пароли не совпадают';
+            }
+        }
+        catch (Exception $e)
+        {
+            $error_msg = $e->getMessage();
+        }
 
 		return $this->render('register/register.html.twig', [
 			'form' => $form->createView(),
-			'error' => $error_msg
+			'reg_error' => $error_msg
 		]);
 	}
 
@@ -104,24 +120,34 @@ class RegisterController extends Controller
 
         if(!$user)
             return $this->redirectToRoute("homepage");
-        if($user->getActive())
+        if($user->getRole() != 'ROLE_CREATED')
             return $this->redirectToRoute("homepage");
 
-        $user->setActive(true);
+        $user->setRole('ROLE_USER');
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
         return $this->render("register/confirm.html.twig");
     }
-/*
+
     /**
-     * @Rest/Post("/api/tryconfirm/{id}")
+     * @Rest\Post("/api/tryconfirm/{login}", name="tryconfirm")
      */
-    /*function tryconfirmAction(User $user)
-    {
-        if($user->getActive())
+    function tryConfirmAction(User $user, \Swift_Mailer $mailer){
+        if($user->getRole() != 'ROLE_CREATED')
             return new View("User is activated", Response::HTTP_FORBIDDEN);
 
+        $message = (new \Swift_Message('Подтверждение'))
+            ->setFrom("admin@craft-life.fun")
+            ->setTo($user->getEmail())
+            ->setBody($this->render("register/confirm_body.html.twig", [
+                'hash' => hash('sha1', hash('md5', $user->getLogin())),
+                'login' => $user->getLogin()
+            ]), 'text/html');
 
-    }*/
+        $mailer->send($message);
+
+        return new View("OK", Response::HTTP_OK);
+
+    }
 }

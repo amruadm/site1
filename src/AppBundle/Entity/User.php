@@ -13,37 +13,41 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * User
  *
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="users_login_key", columns={"login"})})
+ * @ORM\Table(name="user",
+ *     uniqueConstraints={
+ *          @ORM\UniqueConstraint(name="users_login_key", columns={"login"}),
+ *          @ORM\UniqueConstraint(name="users_email_key", columns={"email"})
+ *     }
+ * )
  * @ORM\Entity(repositoryClass="UserRepository")
  * @UniqueEntity(
- *     fields={"login", "email"},
+ *     fields={"login"},
  *     errorPath="homepage",
- *     message="This port is already in use on that host."
+ *     message="Такой пользователь уже существует"
+ * )
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     errorPath="homepage",
+ *     message="Такой E-Mail уже используется"
  * )
  * @Serializer\AccessType("public_method")
  */
 class User implements UserInterface
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="active", type="boolean", nullable=false)
-     */
-    private $active = false;
 
     /**
      * @var string
      *
      * @ORM\Column(name="role", type="string", length=32, nullable=false)
      */
-    private $role = 'ROLE_USER';
+    private $role = 'ROLE_CREATED';
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=24, nullable=false, unique=true)
      * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
+     *     message = "Некорректный E-Mail: '{{ value }}'",
      *     checkMX = true
      * )
      */
@@ -53,12 +57,15 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="login", type="string", length=16, nullable=false, unique=true)
-     * @Assert\Regex("/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/")
+     * @Assert\Regex(
+     *      pattern="/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/",
+     *      message="Имя пользователя содержит некорректные символы"
+     * )
      * @Assert\Length(
      *      min = 4,
      *      max = 16,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     *      minMessage = "Логин должен быть не короче {{ limit }} символов",
+     *      maxMessage = "Логин должен быть не длиннее {{ limit }} символов"
      * )
      */
     private $login;
@@ -67,6 +74,12 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(name="pass", type="string", length=64, nullable=false)
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 16,
+     *      minMessage = "Пароль должен быть не короче {{ limit }} символов",
+     *      maxMessage = "Пароль должен быть не длиннее {{ limit }} символов"
+     * )
      */
     private $pass;
 
@@ -271,36 +284,11 @@ class User implements UserInterface
         $this->role = $role;
     }
 
-    /**
-     * @return string
-     */
-    public function getActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param string $active
-     */
-    public function setActive($active)
-    {
-        $this->active = $active;
-    }
-
     public function getRoles()
     {
-        if(!$this->active)
-            return [$this->role];
-        $rolesmap = [
-            'ROLE_ADMIN' => ['ROLE_ADMIN', 'ROLE_USER', 'ROLE_ACTIVE'],
-            'ROLE_USER' => ['ROLE_USER', 'ROLE_ACTIVE']
-        ];
-        if(isset($rolesmap[$this->role])){
-            return $rolesmap[$this->role];
-        }
-        else{
-            return [];
-        }
+        if($this->role == 'ROLE_ADMIN')
+            return ['ROLE_USER', 'ROLE_ADMIN'];
+        return [$this->role];
     }
 
     public function getPassword()

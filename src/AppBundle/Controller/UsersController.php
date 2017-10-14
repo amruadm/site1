@@ -19,6 +19,7 @@ class UsersController extends Controller
 {
 	/**
      * @Rest\Get("/api/users")
+     * @Security("has_role('ROLE_ADMIN')")
 	 */
 	public function usersAction()
 	{
@@ -123,24 +124,19 @@ class UsersController extends Controller
     }
 
     /**
-     * @Route("/user/{id}", name="userpage")
+     * @Route("/user/{login}", name="userpage")
      */
-    public function userAction($id)
+    public function userAction(User $user)
     {
-        $resultUser = $this->getDoctrine()->getRepository("AppBundle:User")->find($id);
-
-        //$skin_url = $resultUser
-        //$this->getParameter("skins_path"),
-
-        $skin_path = $this->getParameter("skins_path").$resultUser->getLogin().".png";
+        $skin_path = $this->getParameter("skins_path").$user->getLogin().".png";
         $skin_url = "/img/uploads/defaultSkin.png";
         if(file_exists($skin_path))
         {
-            $skin_url = "/img/uploads/skins/".$resultUser->getLogin().".png";
+            $skin_url = "/img/uploads/skins/".$user->getLogin().".png";
         }
 
         return $this->render("users/user.html.twig", [
-            'user' => $resultUser,
+            'user' => $user,
             'skin' => $skin_url
         ]);
     }

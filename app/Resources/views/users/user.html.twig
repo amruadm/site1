@@ -34,9 +34,20 @@
             {% endif %}
         </table>
 
-        {% if not is_granted('ROLE_ACTIVE') %}
-            <span style="color: red">Ваш аккаунт не подтверждён</span> <a href="">(Не пришло сообщение)</a>
+        {% if user.login == app.user.login and user.role == 'ROLE_CREATED' %}
+            <div id="retry_block" ng-controller="confirmController">
+                <span style="color: red">Ваш аккаунт не подтверждён</span>
+                <button class="btn btn-info" id="retry_confirm" ng-click="retryMail('{{ app.user.login }}')">Отправить сообщение!</button>
+                <i class="fa fa-refresh w3-large" style="display: none;"></i>
+                <span id="span_msg"></span>
+            </div>
         {% endif %}
     </div>
 
 {% endblock %}
+
+{% if user.login == app.user.login and user.role == 'ROLE_CREATED' %}
+    {% block jsincludes %}
+        <script type="text/javascript" src="{{ asset('js/app/confirm.js') }}"></script>
+    {% endblock %}
+{% endif %}

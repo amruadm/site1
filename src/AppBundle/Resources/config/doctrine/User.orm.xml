@@ -3,19 +3,15 @@
   <entity name="AppBundle\Entity\User" table="user">
     <unique-constraints>
       <unique-constraint name="users_login_key" columns="login"/>
+      <unique-constraint name="users_email_key" columns="email"/>
       <unique-constraint name="uuid" columns="uuid"/>
     </unique-constraints>
     <id name="id" type="bigint" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="active" type="boolean" column="active" nullable="false">
-      <options>
-        <option name="fixed">false</option>
-      </options>
-    </field>
     <field name="role" type="string" column="role" length="32" nullable="false">
       <options>
-        <option name="fixed">ROLE_USER</option>
+        <option name="fixed">ROLE_CREATED</option>
       </options>
     </field>
     <field name="email" type="string" column="email" length="32" nullable="false">

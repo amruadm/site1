@@ -76,7 +76,12 @@ swiftmailer:
     host: '%mailer_host%'
     username: '%mailer_user%'
     password: '%mailer_password%'
-    spool: { type: memory }
+    spool:
+        type: file
+        path: '%kernel.root_dir%/spool'
+    antiflood:
+        threshold: 10
+        sleep: 10
 
 # Nelmio CORS Configuration
 nelmio_cors:
@@ -120,3 +125,6 @@ jms_serializer:
                 namespace_prefix: AppBundle
                 path: %kernel.root_dir%/config/serializer/AppBundle
         auto_detection: true
+
+gregwar_captcha:
+    invalid_message: 'Неверный код'

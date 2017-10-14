@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Post;
 use Symfony\Component\Validator\Constraints\Date;
@@ -26,6 +27,12 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="comm_text", type="text", length=65535, nullable=true)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 64,
+     *      minMessage = "Комментарий не может быть короче {{ limit }} символов",
+     *      maxMessage = "Комментарий не может быть длиннее {{ limit }} символов"
+     * )
      */
     private $commText;
 

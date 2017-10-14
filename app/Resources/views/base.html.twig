@@ -49,7 +49,7 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>{{app.user.login}}<span class="caret"></span></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ url('userpage', {'id': app.user.id}) }}">Профиль</a></li>
+                                    <li><a href="{{ url('userpage', {'login': app.user.login}) }}">Профиль</a></li>
                                     {% if is_granted('ROLE_ADMIN') %}
                                     <li><hr /></li>
                                     <li><a href="{{ url('admin/users') }}">Юзеры</a></li>
@@ -75,8 +75,12 @@
         </nav>
 
 
-        {% if error is defined %}
-            <p style="color: red; background-color: #684646;">{{ error }}</p>
+        {% if error.message is defined %}
+            <div align="center">
+                <p style="color: red;">
+                    {{ error.message | replace({"Bad credentials." : "Неверные логин или пароль"}) }}
+                </p>
+            </div>
         {% endif %}
         <div class="container-fluid body-main" style="width: {{ page_width }}; padding: 0px;">
             <div class="row content">

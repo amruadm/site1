@@ -16,7 +16,7 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
-                    <td><a href="{{ url('userpage', {'id': user.id}) }}" target="_blank">{{ user.login }}</a></td>
+                    <td><a href="{{ url('userpage', {'login': user.login}) }}" target="_blank">{{ user.login }}</a></td>
                     <td>{{ user.uuid }}</td>
                 </tr>
             {% endfor %}

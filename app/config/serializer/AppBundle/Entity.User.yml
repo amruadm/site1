@@ -13,3 +13,5 @@ AppBundle\Entity\User:
             expose: true
         serverID:
             expose: true
+        role:
+            expose: true

@@ -269,11 +269,24 @@ a.navbar-brand:visited{
 	background-color: rgb(252,252,252);
 }
 
+.row-form{
+	line-height: 1.5;
+	margin-bottom: 10px;
+}
+
+.row-form img{
+	margin-bottom: 10px;
+}
+
 hr{
 	border: none;
 	color: #834824;
 	background-color: #834824;
 	height: 1px;
+}
+
+.fa-refresh{
+	animation: spin 2s linear infinite;
 }
 
 @keyframes added {
@@ -296,6 +309,11 @@ hr{
 		top: 200px;
 		opacity: 0;
 	}
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 
 .animate.ng-enter

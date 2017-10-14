@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="panel primary-panel body-panel">
+    <div class="panel primary-panel body-panel" ng-controller="confirmController">
         На ваш E-Mail отправлено письмо для подтсверждения вашего аккаунта.<br />
+        <div id="retry_block">
+            <button id="retry_confirm" ng-click="retryMail('{{ user.login }}')">Повторить!</button>
+            <i class="fa fa-refresh w3-large" style="display: none;"></i>
+            <span id="span_msg"></span>
+        </div>
     </div>
+{% endblock %}
+
+{% block jsincludes %}
+    <script type="text/javascript" src="{{ asset('js/app/confirm.js') }}"></script>
 {% endblock %}

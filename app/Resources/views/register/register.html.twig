@@ -6,30 +6,46 @@
 
 {% block body %}
     <div class="panel primary-panel body-panel">
-        <h1 align="center" class="body-header">Регистрация</h1>
+        <h1 class="body-header" align="center">Регистрация</h1>
         {{ form_start(form) }}
-
-        <div class="row">
-            <div class="col-sm-2">{{ form_label(form.login) }}</div>
+        <div>
+            <ul style="color: red;">
+                {% if reg_error is defined %}
+                    {% if reg_error is iterable %}
+                        {% for err in reg_error %}
+                            <li>{{ err }}</li>
+                        {% endfor %}
+                    {% else %}
+                        {{ reg_error }}
+                    {% endif %}
+                    <br />
+                {% endif %}
+            </ul>
+        </div>
+        <div class="row row-form">
+            <div class="col-sm-3">{{ form_label(form.login) }}</div>
             <div class="col-sm-2">{{ form_widget(form.login) }}</div>
         </div>
-        <div class="row">
-            <div class="col-sm-2">{{ form_label(form.email) }}</div>
+        <div class="row row-form">
+            <div class="col-sm-3">{{ form_label(form.email) }}</div>
             <div class="col-sm-2">{{ form_widget(form.email) }}</div>
         </div>
-        <div class="row">
-            <div class="col-sm-2">{{ form_label(form.pass) }}</div>
+        <div class="row row-form">
+            <div class="col-sm-3">{{ form_label(form.pass) }}</div>
             <div class="col-sm-2">{{ form_widget(form.pass) }}</div>
         </div>
-        <div class="row">
-            <div class="col-sm-2">{{ form_label(form.cpass) }}</div>
+        <div class="row row-form">
+            <div class="col-sm-3">{{ form_label(form.cpass) }}</div>
             <div class="col-sm-2">{{ form_widget(form.cpass) }}</div>
         </div>
-        <div class="row">
-            <div class="col-sm-2">{{ form_label(form.capcha) }}</div>
+        <div class="row row-form">
+            <div class="col-sm-3">{{ form_label(form.capcha) }}</div>
             <div class="col-sm-2">{{ form_widget(form.capcha) }}</div>
         </div>
         <div class="col-sm-2">{{ form_widget(form._token) }}</div>
+        <div class="row row-form">
+            <div class="col-sm-2">{{ form_widget(form.save) }}</div>
+        </div>
 
         {{ form_end(form) }}
     </div>

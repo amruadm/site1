@@ -16,15 +16,20 @@
                 <b>{[{ commentsNum }]}</b>
             </i>
         </p>
-        {% if is_granted('IS_AUTHENTICATED_FULLY')  %}
-            <div>
+        {% if is_granted('ROLE_USER')  %}
+            <div id="comment_block">
                 <b><span style="color: #ffbf00;">Добавить комментарий</span></b>
                 <br />
                 <textarea class="form-control" id="comm_add_text" style="width: 100%; height: 80px; resize: none;" ng-model="comment_add"></textarea> <br />
                 <button class="btn btn-info" ng-click="addComment({{ post.id }});">Добавить</button>
+                <i class="fa fa-refresh w3-large" style="color: white; display: none;"></i>
             </div>
         {% else %}
-            <b style="color: #ffbf00;">Залогинтесь или <a href="{{ url('register') }}">зарегистрируйтесь</a> что бы оставлять комментарии</b>
+            {% if app.user.role == 'ROLE_CREATED' %}
+                <b style="color: #ffbf00;">Вы должны подтвердить свою <a href="{{ url('userpage', {'login': app.user.login}) }}">учётную запись</a></b>
+            {% else %}
+                <b style="color: #ffbf00;">Залогинтесь или <a href="{{ url('register') }}">зарегистрируйтесь</a> что бы оставлять комментарии</b>
+            {% endif %}
         {% endif %}
         <br />
         <div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
@@ -33,7 +38,8 @@
                 <b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
                 {[{ comment.added_date | date: 'dd.MM.yyyy в HH:mm' }]}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a style="float: right;" ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
+                    <a id="comm_delete_{[{comment.id}]}" style="float: right;" ng-click="removeComment({{ post.id }}, comment.id);"><img src="{{ asset("img/remove-icon-png-25.png") }}" width="16" height="16"/></a>
+                    <i id="comm_del_wait_{[{comment.id}]}" class="fa fa-refresh w3-large" style="float: right; display: none;"></i>
                 {% endif %}
             </div>
             <div class="panel-body">{[{ comment.comm_text }]}</div>

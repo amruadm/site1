@@ -19,25 +19,36 @@ myApp.controller('postController', ['$scope', '$http', function($scope, $http){
 
     $scope.addComment = function(post_id){
         var comm_text = $("#comm_add_text").val();
-        $http.post("/api/comment",
+        $('#comment_block button').hide();
+        $('#comment_block i').show();
+        $http.post("/api/comment/"+post_id,
             {
-                'post_id': post_id,
                 'comm_text': comm_text
             },
             {}).then(function(response){ // succefull
                 $scope.getComments(post_id);
                 $("#comm_add_text").val('');
+                $('#comment_block button').show();
+                $('#comment_block i').hide();
             },
             function (response) { // error
-                alert(response.headers);
+                $('#comment_block button').show();
+                $('#comment_block i').hide();
+                alert(response.data);
             });
     };
 
     $scope.removeComment = function(post_id, id){
+        $('#comm_delete_'+id).hide();
+        $('#comm_del_wait_'+id).show();
         $http.delete("/api/comment/"+id,{}).then(function(response){
             $scope.getComments(post_id);
+            $('#comm_del_wait_'+id).hide();
+            $('#comm_delete_'+id).show();
         }, function(response){
-            alert("Bad response");
+            $('#comm_del_wait_'+id).hide();
+            $('#comm_delete_'+id).show();
+            alert(response.data);
         });
     };
 
