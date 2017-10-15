@@ -1,0 +1,60 @@
+{% set page_width = '450px' %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Craft-Life - Сервер Minecraft!{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/site/base.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/angular.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/angular-sanitize.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/angular-animate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app/main.js') }}"></script>
+</head>
+<body ng-app="mainApp">
+<div class="background-image"></div>
+
+<nav class="navbar navbar-fixed-top launcher-header">
+
+</nav>
+
+<div style="min-height: 60px;">
+</div>
+
+<div class="container-fluid body-main" style="width: {{ page_width }}; padding: 0px;">
+    {% for post in posts %}
+        <div class="panel panel-default news-panel" style="border: 0px;">
+            <div class="panel-heading">
+                <b><span class="post-title">{{ post.title }}</span></b>
+            </div>
+            <div class="panel-body" style="padding: 0px;">
+                <!--<img src="{{ asset('img/uploads/' ~ post.image) }}" class="post-image" />-->
+                <p>
+                    {{ post.shortBody }}
+                </p>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="panel-footer" style="padding-right: 0px; padding-top: 0px;">
+                    <span class="panel-footer-addedby">
+                        <i class="fa fa-user-circle w3-large"></i> <b>{{ post.addedBy.login }}</b>
+                    </span>
+                <div style="float: right; margin-right: 0px;">
+                    <div class="panel-footer-date">
+                        <i class="fa fa-calendar w3-large"></i>
+                        <span style="font-size: 12pt;">&nbsp;<b>{{ post.addedDate | date('d.m.y') }} в {{ post.addedDate | date('H:i') }}</b></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

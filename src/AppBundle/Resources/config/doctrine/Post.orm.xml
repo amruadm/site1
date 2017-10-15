@@ -23,6 +23,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="shortBody" type="text" column="short_body" length="65535" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <field name="image" type="string" column="image" length="32" nullable="true">
       <options>
         <option name="fixed"/>

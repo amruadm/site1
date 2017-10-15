@@ -37,6 +37,13 @@ class Post
 
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(name="short_body", type="text", length=65535, nullable=false)
+     */
+    private $shortBody;
+
+    /**
+     * @var string
      * @Assert\NotBlank(message="Please, upload the image")
      * @Assert\File(
      *     maxSize = "5M",
@@ -167,8 +174,20 @@ class Post
         $this->addedBy = $addedBy;
     }
 
+    /**
+     * @return string
+     */
+    public function getShortBody()
+    {
+        return $this->shortBody;
+    }
 
-
-
+    /**
+     * @param string $shortBody
+     */
+    public function setShortBody($shortBody)
+    {
+        $this->shortBody = $shortBody;
+    }
 }
 

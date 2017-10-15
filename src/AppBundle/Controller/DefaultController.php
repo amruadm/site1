@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,5 +23,17 @@ class DefaultController extends Controller
         $request->getSession()->remove('error');
 
         return $this->render('default/main.html.twig', ['error' => $error]);
+    }
+
+    /**
+     * @Route("/launcher", name="launcher")
+     */
+    public function launcherAction()
+    {
+        $posts = $this->getDoctrine()->getRepository(Post::class)->findBy([], ['addedDate' => 'DESC']);
+
+        return $this->render('default/launcher.html.twig', [
+            'posts' => $posts
+        ]);
     }
 }

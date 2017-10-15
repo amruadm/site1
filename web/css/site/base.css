@@ -289,6 +289,14 @@ hr{
 	animation: spin 2s linear infinite;
 }
 
+.launcher-header{
+	width: 700px;
+	min-height: 50px;
+	background-image: url('/img/style/HEAD.png');
+	background-repeat: no-repeat;
+	background-size: 700px 50px;
+}
+
 @keyframes added {
 	from {
 		opacity: 0;

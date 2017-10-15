@@ -69,6 +69,7 @@ class PostController extends Controller
         $form = $this->createFormBuilder($post)
             ->setAction($this->generateUrl('post'))
             ->add('title', TextType::class, ['label' => 'Заголовок'])
+            ->add('shortBody', TextareaType::class, ['label' => 'Краткое описание'])
             ->add('body', TextareaType::class, ['label' => 'Текст'])
             ->add('image', FileType::class, ['label' => 'Пикча'])
             ->add('submit', SubmitType::class, ['label' => 'Окай'])->getForm();
@@ -100,7 +101,7 @@ class PostController extends Controller
 
             $manager->flush();
 
-            $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render("posts/edit.html.twig", [
