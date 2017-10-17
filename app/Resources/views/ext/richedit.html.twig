@@ -66,8 +66,6 @@
         $(document).ready(function(){
             $("#editor").wysiwyg();
 
-            $('#editor').html($('#info_body').html())
-
             $('#{{ form_id }}').submit(function(){
                 $('#editor_hidden').val($('#editor').html());
                 console.log($('#editor_hidden').val());

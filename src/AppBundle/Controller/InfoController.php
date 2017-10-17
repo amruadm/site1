@@ -20,10 +20,10 @@ class InfoController extends Controller
 
         if(isset($infoConfig[$action])){
 
-            $filename = $this->get('kernel')->getRootDir().'/Resources/views/info/'.$action.'.html';
+            $filename = $this->get('kernel')->getRootDir().'/../web/pages/'.$action.'.html';
 
             if(!file_exists($filename)){
-                file_put_contents($filename, "<h1>Please put content to this page</h1>");
+                file_put_contents($filename, "Пустая страница");
             }
 
             $contents = file_get_contents($filename);
