@@ -35,7 +35,7 @@
         <br />
         <div class="animate comment panel panel-default" ng-repeat="comment in postComments" ng-animate="'animate'">
             <div class="panel-heading">
-                <img src="{[{ comment.added_by.avatar }]}" width="32px" style="margin-top: -8px;" />
+                <img src="{[{ comment.added_by.avatar }]}" width="32px" height="32px" style="margin-top: -8px;" />
                 <b><a ng-click="replyComment(comment.added_by.login);">{[{ comment.added_by.login }]}</a></b>
                 {[{ comment.added_date | date: 'dd.MM.yyyy в HH:mm' }]}
                 {% if is_granted('ROLE_ADMIN') %}
