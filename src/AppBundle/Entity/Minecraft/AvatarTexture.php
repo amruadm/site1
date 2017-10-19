@@ -4,7 +4,7 @@ namespace AppBundle\Entity\Minecraft;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CloakTexture extends MinecraftTexture
+class AvatarTexture extends MinecraftTexture
 {
     /**
      * @Assert\NotBlank()
@@ -16,8 +16,8 @@ class CloakTexture extends MinecraftTexture
      * @Assert\Image(
      *     minWidth = 64,
      *     maxWidth = 512,
-     *     minHeight = 32,
-     *     maxHeight = 256
+     *     minHeight = 64,
+     *     maxHeight = 512
      * )
      */
     private $image;

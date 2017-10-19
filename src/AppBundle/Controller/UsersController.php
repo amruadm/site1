@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Minecraft\AvatarTexture;
 use AppBundle\Entity\Minecraft\CloakTexture;
 use AppBundle\Entity\Minecraft\SkinTexture;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -9,9 +10,11 @@ use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use AppBundle\Entity\User;
 
@@ -28,7 +31,48 @@ class UsersController extends Controller
 	}
 
     /**
-     * @Rest\Post("/api/skin")
+     * @Rest\Get("/api/userdata")
+     */
+	public function getCurrentUserData()
+    {
+        $user = $this->getUser();
+
+        if(!$user){
+            return new View("You are not authenticated", Response::HTTP_FORBIDDEN);
+        }
+
+        return $user;
+    }
+
+    /**
+     * @Route("/user/avatar/set", name="change_avatar")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function setAvatarAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        $avatar = new AvatarTexture();
+        $file = $request->files->get("avatar");
+        $avatar->setImage($file);
+
+        $validator = $this->get('validator');
+        $error = $validator->validate($avatar);
+
+        if(count($error) > 0) {
+            return new RedirectResponse($request->headers->get('referer'));
+        }
+
+        $file->move(
+            $this->getParameter("avarats_uploads"),
+            $user->getLogin().".png"
+        );
+
+        return new RedirectResponse($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/user/skin/set", name="change_skin")
      * @Security("has_role('ROLE_USER')")
      */
     public function setSkinAction(Request $request)
@@ -42,31 +86,37 @@ class UsersController extends Controller
         $validator = $this->get('validator');
         $error = $validator->validate($skin);
 
-        if(!empty($error))
-            return new View($error, Response::HTTP_BAD_REQUEST);
+        if(count($error) > 0) {
+            return new Response("<h1>$error</h1>");
+        }
 
         $file->move(
             $this->getParameter("skins_path"),
             $user->getLogin().".png"
         );
 
-        return new View("OK", Response::HTTP_OK);
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
     /**
-     * @Rest\Delete("/api/skin")
+     * @Route("/user/skin/delete", name="delete_skin")
      * @Security("has_role('ROLE_USER')")
      */
     public function deleteSkinAction(Request $request)
     {
         $user = $this->getUser();
         $filename = $this->getParameter("skins_path").$user->getLogin().".png";
-        $fs = new Filesystem();
-        $fs->remove($filename);
+        if(file_exists($filename))
+        {
+            $fs = new Filesystem();
+            $fs->remove($filename);
+        }
+
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
     /**
-     * @Rest\Post("/api/cloak")
+     * @Route("/user/cloak/set", name="change_cloak")
      * @Security("has_role('ROLE_VIP')")
      */
     public function setCloakAction(Request $request)
@@ -75,32 +125,40 @@ class UsersController extends Controller
 
         $cloak = new CloakTexture();
         $file = $request->files->get("cloak");
+        if(empty($file))
+            return new RedirectResponse($request->headers->get('referer'));
+
         $cloak->setImage($file);
 
         $validator = $this->get('validator');
         $error = $validator->validate($cloak);
 
         if(!empty($error))
-            return new View($error, Response::HTTP_BAD_REQUEST);
+            return new RedirectResponse($request->headers->get('referer'));
 
         $file->move(
             $this->getParameter("cloak_path"),
             $user->getLogin().".png"
         );
 
-        return new View("OK", Response::HTTP_OK);
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
     /**
-     * @Rest\Delete("/api/cloak")
+     * @Route("/user/cloak/delete", name="delete_cloak")
      * @Security("has_role('ROLE_VIP')")
      */
     public function deleteCloakAction(Request $request)
     {
         $user = $this->getUser();
         $filename = $this->getParameter("cloak_path").$user->getLogin().".png";
-        $fs = new Filesystem();
-        $fs->remove($filename);
+        if(file_exists($filename))
+        {
+            $fs = new Filesystem();
+            $fs->remove($filename);
+        }
+
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
     /**
@@ -128,16 +186,8 @@ class UsersController extends Controller
      */
     public function userAction(User $user)
     {
-        $skin_path = $this->getParameter("skins_path").$user->getLogin().".png";
-        $skin_url = "/img/uploads/defaultSkin.png";
-        if(file_exists($skin_path))
-        {
-            $skin_url = "/img/uploads/skins/".$user->getLogin().".png";
-        }
-
         return $this->render("users/user.html.twig", [
-            'user' => $user,
-            'skin' => $skin_url
+            'user' => $user
         ]);
     }
 

@@ -2,8 +2,7 @@
 
 namespace AppBundle\Entity\Minecraft;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraint as Assert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SkinTexture extends MinecraftTexture
 {
@@ -28,7 +27,7 @@ class SkinTexture extends MinecraftTexture
         return $this->image;
     }
 
-    public function setImage(File $imageFile)
+    public function setImage($imageFile)
     {
         $this->image = $imageFile;
     }

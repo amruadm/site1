@@ -4,6 +4,9 @@ AppBundle\Entity\User:
         getSkin:
             serialized_name: skin
             type: string
+        getAvatar:
+            serialized_name: avatar
+            type: string
     properties:
         id:
             expose: true

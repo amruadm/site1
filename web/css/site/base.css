@@ -187,12 +187,6 @@ a.navbar-brand:visited{
 }
 
 .skin-image{
-	width:32px;
-	height:32px;
-	background-position: -32px -32px;
-	transform: scale(3);
-	margin: 32px;
-
 	image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
 	image-rendering: -moz-crisp-edges;          /* Firefox                        */
 	image-rendering: -o-crisp-edges;            /* Opera                          */
@@ -204,23 +198,16 @@ a.navbar-brand:visited{
 	background-repeat: no-repeat;*/
 }
 
-.skin-image-sm{
+.avatar-image-sm{
 	width:32px;
 	height:32px;
-	background-position: -32px -32px;
+	background-size: 32px 32px;
+	/*background-position: -32px -32px;
 	transform: scale(1);
 	margin-top: -5px;
 	margin-right: 10px;
-	margin-left: -8px;
+	margin-left: -8px;*/
 	float: left;
-
-	image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
-	image-rendering: -moz-crisp-edges;          /* Firefox                        */
-	image-rendering: -o-crisp-edges;            /* Opera                          */
-	image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-	image-rendering: pixelated; /* Chrome */
-	image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-	-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 }
 
 /*.skin-image img{

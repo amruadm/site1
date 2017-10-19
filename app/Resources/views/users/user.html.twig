@@ -6,9 +6,19 @@
         <table class="table">
             <tr>
                 <td>
-                    <div class="skin-image" style="background-image: url('{{ asset(skin) }}');"></div>
+                    <img src="{{ user.avatar }}" width="200px" />
                 </td>
-                <td></td>
+                <td>
+                    {% if user.id == app.user.id %}
+                        <fieldset>
+                            <legend>Загрузить аватар</legend>
+                            <form action="{{ url('change_avatar') }}" method="post" enctype="multipart/form-data">
+                                <input type="file" name="avatar" /><br />
+                                <button class="btn btn-info" type="submit">Применить</button>
+                            </form>
+                        </fieldset>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <td>Пользователь</td>
@@ -22,14 +32,24 @@
                 <td>Дата реистрации</td>
                 <td>{{ user.regdate | date('d.m.Y H:i') }}</td>
             </tr>
+            {% if user.id == app.user.id %}
+            <tr>
+                <td colspan="2">
+                    <fieldset>
+                        <legend>Загрузить скин</legend>
+                        <img class="skin-image" style="float: left;" src="{{ asset(user.skin) }}" width="200px"/>
+                        <form action="{{ url('change_skin') }}" method="post" enctype="multipart/form-data">
+                            <input type="file" name="skin" /><br />
+                            <button class="btn btn-info" type="submit">Применить</button>
+                        </form>
+                    </fieldset>
+                </td>
+            </tr>
+            {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <tr>
                     <td>Роль</td>
                     <td>{{ user.role }}</td>
-                </tr>
-                <tr>
-                    <td>uuid</td>
-                    <td>{{ user.uuid }}</td>
                 </tr>
             {% endif %}
         </table>

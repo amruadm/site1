@@ -316,11 +316,24 @@ class User implements UserInterface
      */
     public function getSkin()
     {
-        $skinsDir = __DIR__.'/../../../../web/img/uploads/skins/';
+        $skinsDir = __DIR__.'/../../../web/img/uploads/skins/';
         if(!file_exists($skinsDir.$this->login.'.png'))
         {
             return '/img/uploads/defaultSkin.png';
         }
         return '/img/uploads/skins/'.$this->login.'.png';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAvatar()
+    {
+        $avatarDir = __DIR__.'/../../../web/img/uploads/ava/';
+        if(!file_exists($avatarDir.$this->login.'.png'))
+        {
+            return '/img/uploads/defaultAvatar.png';
+        }
+        return '/img/uploads/ava/'.$this->login.'.png';
     }
 }
