@@ -37,7 +37,7 @@
                 <td colspan="2">
                     <fieldset>
                         <legend>Загрузить скин</legend>
-                        <img class="skin-image" style="float: left;" src="{{ asset(user.skin) }}" width="200px"/>
+                        <img class="skin-image" style="float: left;" src="{{ asset(user.skin) }}" width="256px" height="128px"/>
                         <form action="{{ url('change_skin') }}" method="post" enctype="multipart/form-data">
                             <input type="file" name="skin" /><br />
                             <button class="btn btn-info" type="submit">Применить</button>
