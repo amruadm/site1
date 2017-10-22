@@ -82,6 +82,25 @@ ul.dropdown-menu{
 	color: white;
 }
 
+.donate-btn{
+	background-color: #c8ea62;
+	border: hidden;
+	padding: 5px;
+	font-size: 14pt;
+	color: white;
+	min-width: 400px;
+	min-height: 40px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.footer-panel{
+	margin-bottom: 10px;
+}
+
+.donate-btn:hover{
+	background-color: #4af700;
+}
+
 .btn:focus{
 	outline: none;
 }
