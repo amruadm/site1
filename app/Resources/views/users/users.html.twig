@@ -11,13 +11,13 @@
             <tr>
                 <th width="15%">ID</th>
                 <th width="35%;">Логин</th>
-                <th>uuid</th>
+                <th>E-Mail</th>
             </tr>
             {% for user in users %}
                 <tr>
                     <td>{{ user.id }}</td>
                     <td><a href="{{ url('userpage', {'login': user.login}) }}" target="_blank">{{ user.login }}</a></td>
-                    <td>{{ user.uuid }}</td>
+                    <td>{{ user.email }}</td>
                 </tr>
             {% endfor %}
         </table>
