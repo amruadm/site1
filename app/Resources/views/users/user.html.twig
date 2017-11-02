@@ -48,8 +48,23 @@
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <tr>
-                    <td>Роль</td>
+                    <td>Роль на сайте</td>
                     <td>{{ user.role }}</td>
+                </tr>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <tr>
+                    <td>Группа</td>
+                    <td>
+                        <form action="{{ path('user/pex', {'login': user.login}) }}" method="get">
+                            <select class="form-control" name="pex_group">
+                                {% for gr in pex_groups %}
+                                    <option value="{{ gr }}" {{ pex==gr?"selected='selected'":'' }} >{{ gr }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-info" type="submit">Изменить</button>
+                        </form>
+                    </td>
                 </tr>
             {% endif %}
         </table>

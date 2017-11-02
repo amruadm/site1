@@ -41,7 +41,7 @@
                             </ul>
                         </li>
                         <li><a href="{{ url('info', {'action': 'rules'}) }}">Правила</a></li>
-                        <!--<li><a href="{{ url('services') }}">Услуги</a></li>-->
+                        <li><a href="{{ url('services') }}">Услуги</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -89,23 +89,18 @@
                 <div class="col-sm-4">
                     <div ng-controller="serversController" class="primary-panel" style="width: 375px;">
                         <div align="center">
-                            <button type="button" class="btn btn-lg download-btn" style="width: 100%;" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'">Скачать лаунчер</button>
+                            <button type="button" class="btn btn-lg download-btn" style="width: 100%;" onclick="window.location='{{ url('play') }}'"><b>Играть!</b></button>
                         </div>
                         <br />
                         <span style="font-size: 18pt; color: #834824;"><b>Сервера</b></span>
-                        <table class="table table-striped">
-                            <tr>
-                                <td><p ng-bind-html="description"></p></td>
-                                <td>
-                                    <span style="font-size: 14pt;">{[{players}]} / {[{maxPlayers}]}</span>
-                                    &nbsp;<button class="btn-info btn-sm" onclick="location.href='{{ url('info', {'action': 'server-classic'}) }}'; ">Info</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><button class="btn btn-info" ng-click="updateServers();">Обновить</button></td>
-                                <td></td>
-                            </tr>
-                        </table>
+                        <div ng-repeat="server in servers">
+                            <b><a href="/info/{[{ server.info }]}">{[{ server.name }]}</a></b><br />
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: {[{ 100*server.players / server.max_players }]}%;">
+                                    <span class="sr-only">{[{ server.players }]} / {[{ server.max_players }]}</span>
+                                </div>
+                            </div>
+                        </div>
                         <hr />
                         <span style="font-size: 18pt; color: #834824;"><b>Голосуй!</b></span>
                         <div style="margin-top: 10px; margin-bottom: 10px;" align="center">

@@ -9,16 +9,6 @@
     <id name="id" type="bigint" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="role" type="string" column="role" length="32" nullable="false">
-      <options>
-        <option name="fixed">ROLE_CREATED</option>
-      </options>
-    </field>
-    <field name="email" type="string" column="email" length="32" nullable="false">
-      <options>
-        <option name="fixed"></option>
-      </options>
-    </field>
     <field name="login" type="string" column="login" length="16" nullable="false">
       <options>
         <option name="fixed"/>
@@ -45,6 +35,16 @@
       </options>
     </field>
     <field name="serverid" type="string" column="serverID" length="41" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="role" type="string" column="role" length="32" nullable="false">
+      <options>
+        <option name="fixed">1</option>
+      </options>
+    </field>
+    <field name="email" type="string" column="email" length="32" nullable="false">
       <options>
         <option name="fixed"/>
       </options>

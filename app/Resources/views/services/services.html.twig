@@ -6,7 +6,56 @@
 
 {% block body %}
     <div class="panel primary-panel body-panel">
-        <h1 align="center" class="body-header">Услуги</h1>
-        ...
+        <h3 align="center"><b>Поддержать наш проект</b></h3>
+        Если вам очень понравился наш проект, вы можете помочь нам с развитием.<br />
+        <br />
+        <script language=JavaScript
+        src='https://auth.robokassa.ru/Merchant/PaymentForm/FormFLS.js?MerchantLogin={{ robocassa_login }}&DefaultSum=0&InvoiceID=0&Description=Поддержка проекта Craft-Life&SignatureValue={{ custom_pay_crc }}'></script>
+
     </div>
+    {% for prod_id, prod in products %}
+        <div class="panel primary-panel body-panel">
+            <h3 align="center"><b>{{ prod.name }}</b></h3>
+            <br />
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <form action='https://merchant.roboxchange.com/Index.aspx' method=POST>
+                    <input type=hidden name=MrchLogin value="{{ robocassa_login }}">
+                    <input type=hidden name=OutSum value="{{ prod.price }}">
+                    <input type=hidden name=InvId value="0">
+                    <input type=hidden name=Desc value="Покупка {{ prod.name }}">
+                    <input type=hidden name=SignatureValue value={{ prod.crc }}>
+                    <input type=hidden name=Shp_item value="{{ prod_id }}">
+                    <input type=hidden name=Shp_user value="{{ app.user.id }}">
+                    <input type=hidden name=Culture value="ru">
+                    <button type="submit" class="donate-btn" onclick=""><b>Приобрести за {{ prod.price | number_format(0) }}р. на 1 месяц</b></button>
+                </form>
+            {% else %}
+                <button type="button" class="donate-btn" onclick="alert('Необходимо войти в систему.')"><b>Приобрести за {{ prod.price | number_format(0) }}р. на 1 месяц</b></button>
+            {% endif %}
+            <hr />
+            <b>Описание:</b>
+            <br />
+                {% include 'services/service_'~prod_id~'.html.twig' %}
+            <hr />
+        </div>
+    {% endfor %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="panel primary-panel body-panel">
+            <h3 align="center"><b>Test</b></h3>
+            <form action='https://merchant.roboxchange.com/Index.aspx' method=POST>
+                <input type=hidden name=MrchLogin value="{{ robocassa_login }}">
+                <input type=hidden name=OutSum value="10">
+                <input type=hidden name=InvId value="0">
+                <input type=hidden name=Desc value="Тестовая покупка">
+                <input type=hidden name=SignatureValue value={{ test_crc }}>
+                <input type=hidden name=Shp_item value="0">
+                <input type=hidden name=Shp_user value="{{ app.user.id }}">
+                <input type=hidden name=Culture value="ru">
+                <input type="hidden" name="IsTest" value="1">
+                <button type="submit" class="donate-btn" onclick=""><b>Тестовый платёж</b></button>
+            </form>
+        </div>
+    {% endif %}
+
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="panel primary-panel body-panel">
+        <h2>Как играть?</h2>
+        <ol>
+            <li>Если вы не зарегистрировались, <a class="help-link" href="{{ url('register') }}">зарегистрируйтесь!</a></li>
+            <li>Подтвердите вашу учётную запись (на ваш E-Mail придёт письмо)</li>
+            <li>Для запуска игры вам необходимо <a class="help-link"  href="https://java.com/ru/download/">скачать последнюю версию java</a></li>
+            <li><br />
+                <p><button type="button" class="btn btn-lg download-btn" style="width: 50%;" onclick="window.location='{{ asset('downloads/Launcher.jar') }}'"><b>Скачать лаунчер</b></button></p>
+            </li>
+            <li>PROFIT!!!</li>
+        </ol>
+        <b>Удачной игры!</b>
+    </div>
+    <div class="panel primary-panel body-panel">
+        <h2>Возникли проблемы?</h2>
+        <ul>
+            <li>
+                <b>После авторизации ничего не происходит?</b>
+                <p>
+                    Проверьте, удовлетворяет ли ваш компьютер <b>минимальным системным требованиям</b>
+                    <ul>
+                        <li>Операционная система: Windows XP, Windows Vista, Windows 7, Windows 10.</li>
+                        <li>Процессор: Многоядерный процессор с частотой 1,5+ ГГц или одноядерный процессор с частотой 2,0 + ГГц</li>
+                        <li>Оперативная память: 512 МБ</li>
+                        <li>Место на жестком диске: 80 МБ</li>
+                        <li>Видеокарта совместимая с OpenGL 1.4.</li>
+                    </ul>
+                    Попробуйте обновить <b>драйвера видеокарты</b>... Их вы можнно найти на сайте производителя:
+                    <ul>
+                        <li><a class="help-link" href="http://www.amd.com/ru-ru/innovations/software-technologies/catalyst">AMD</a></li>
+                        <li><a class="help-link" href="http://www.nvidia.ru/Download/index.aspx?lang=ru">NVidia</a></li>
+                    </ul>
+                </p>
+            </li>
+            <li>
+                <b>&laquo;Соединение с сервером&raquo; и ничего не просиходит?</b>
+                <p>Проверьте качество вашего интернет соединения</p>
+            </li>
+        </ul>
+    </div>
+{% endblock %}

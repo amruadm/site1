@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Minecraft\AvatarTexture;
 use AppBundle\Entity\Minecraft\CloakTexture;
 use AppBundle\Entity\Minecraft\SkinTexture;
+use AppBundle\Service\Minecraft\PermissionManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -42,6 +43,17 @@ class UsersController extends Controller
         }
 
         return $user;
+    }
+
+    /**
+     * @Route("/user/{login}/pex", name="user/pex")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function setPexGroupAction(User $user, Request $request, PermissionManager $permissionManager)
+    {
+        $permissionManager->setGroup($user, $request->get('pex_group'));
+
+        return new RedirectResponse($request->headers->get('referer'));
     }
 
     /**
@@ -182,12 +194,14 @@ class UsersController extends Controller
     }
 
     /**
-     * @Route("/user/{login}", name="userpage")
+     * @Route("/user/{login}/", name="userpage")
      */
-    public function userAction(User $user)
+    public function userAction(User $user, PermissionManager $permissionManager)
     {
         return $this->render("users/user.html.twig", [
-            'user' => $user
+            'user' => $user,
+            'pex' => $permissionManager->getGroup($user),
+            'pex_groups' => $permissionManager->getAvailableGroups()
         ]);
     }
 

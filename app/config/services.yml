@@ -29,8 +29,23 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AppBundle\Service\Minecraft\PermissionManager:
+        arguments:
+          $manager: '@doctrine.orm.entity_manager'
+          $groups:
+            - 'Player'
+            - 'VIP'
+            - 'Premium'
+            - 'Administrator'
+
+    AppBundle\Service\Minecraft\ServersManager:
+        public: true
+
     app.sha1_encoder:
         class: AppBundle\Service\Security\UserPassEncoder
+
+    Symfony\Component\Cache\Simple\FilesystemCache:
+        autowire: true
 
 
     # add more services, or override services that need manual wiring

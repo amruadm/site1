@@ -28,6 +28,14 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/play", name="play")
+     */
+    public function playAction(Request $request)
+    {
+        return $this->render('default/howto.html.twig');
+    }
+
+    /**
      * @Route("/launcher", name="launcher")
      */
     public function launcherAction()

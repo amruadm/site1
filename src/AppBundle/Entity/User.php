@@ -287,7 +287,7 @@ class User implements UserInterface
     public function getRoles()
     {
         if($this->role == 'ROLE_ADMIN')
-            return ['ROLE_USER', 'ROLE_ADMIN'];
+            return ['ROLE_USER', 'ROLE_VIP', 'ROLE_PREMIUM', 'ROLE_ADMIN'];
         return [$this->role];
     }
 

@@ -2,22 +2,17 @@
 
 namespace AppBundle\Controller\Minecraft;
 
+use AppBundle\Service\Minecraft\ServersManager;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use MinecraftServerStatus\MinecraftServerStatus;
 
 class MinecraftServersController extends Controller
 {
     /**
      * @Rest\Get("api/minecraft/servers")
      */
-    public function getServers()
+    public function getServers(ServersManager $serversManager)
     {
-        $result = MinecraftServerStatus::query("88.99.226.1");
-        if($result === FALSE){
-            return new View("Error", Response::HTTP_FORBIDDEN);
-        }
-        return $result;
+        return $serversManager->getServers();
     }
 }

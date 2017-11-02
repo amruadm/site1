@@ -98,7 +98,7 @@ ul.dropdown-menu{
 }
 
 .donate-btn:hover{
-	background-color: #4af700;
+	background-color: #ebf442;
 }
 
 .btn:focus{
@@ -284,6 +284,10 @@ a.navbar-brand:visited{
 	margin-bottom: 10px;
 }
 
+.progress-bar{
+	background-color: #66dd66;
+}
+
 hr{
 	border: none;
 	color: #834824;
@@ -301,6 +305,10 @@ hr{
 	background-image: url('/img/style/HEAD.png');
 	background-repeat: no-repeat;
 	background-size: 700px 50px;
+}
+
+.help-link{
+	color: blue;
 }
 
 @keyframes added {

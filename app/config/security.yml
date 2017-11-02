@@ -45,3 +45,4 @@ security:
     access_control:
         - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/administration, roles: ROLE_ADMIN }
+        - { path: ^/payment/order/, ips: [127.0.0.1], host: robocassa\.ru$ }

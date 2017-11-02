@@ -49,6 +49,87 @@ class PermissionsInheritance
      */
     private $id;
 
+    /**
+     * @return string
+     */
+    public function getChild()
+    {
+        return $this->child;
+    }
+
+    /**
+     * @param string $child
+     */
+    public function setChild($child)
+    {
+        $this->child = $child;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param string $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param bool $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorld()
+    {
+        return $this->world;
+    }
+
+    /**
+     * @param string $world
+     */
+    public function setWorld($world)
+    {
+        $this->world = $world;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
 
 }
 

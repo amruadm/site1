@@ -39,6 +39,7 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
             'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Symfony\\Bridge\\Monolog\\' => 23,
             'Symfony\\Bridge\\Doctrine\\' => 24,
+            'Stof\\DoctrineExtensionsBundle\\' => 30,
             'Sensio\\Bundle\\GeneratorBundle\\' => 30,
             'Sensio\\Bundle\\FrameworkExtraBundle\\' => 35,
             'Sensio\\Bundle\\DistributionBundle\\' => 33,
@@ -61,6 +62,10 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
             'Monolog\\' => 8,
             'MinecraftServerStatus\\Packets\\' => 30,
             'MinecraftServerStatus\\' => 22,
+        ),
+        'K' => 
+        array (
+            'Knp\\Bundle\\PaginatorBundle\\' => 27,
         ),
         'J' => 
         array (
@@ -159,6 +164,10 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
         array (
             0 => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Bridge/Doctrine',
         ),
+        'Stof\\DoctrineExtensionsBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stof/doctrine-extensions-bundle',
+        ),
         'Sensio\\Bundle\\GeneratorBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/sensio/generator-bundle',
@@ -210,6 +219,10 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
         'MinecraftServerStatus\\' => 
         array (
             0 => __DIR__ . '/..' . '/funnyitselmo/minecraftserverstatus/src',
+        ),
+        'Knp\\Bundle\\PaginatorBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/knplabs/knp-paginator-bundle',
         ),
         'JMS\\SerializerBundle\\' => 
         array (
@@ -298,6 +311,13 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
                 0 => __DIR__ . '/..' . '/jms/metadata/src',
             ),
         ),
+        'K' => 
+        array (
+            'Knp\\Component' => 
+            array (
+                0 => __DIR__ . '/..' . '/knplabs/knp-components/src',
+            ),
+        ),
         'J' => 
         array (
             'JsonpCallbackValidator' => 
@@ -311,6 +331,13 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
             'JMS\\' => 
             array (
                 0 => __DIR__ . '/..' . '/jms/parser-lib/src',
+            ),
+        ),
+        'G' => 
+        array (
+            'Gedmo\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/gedmo/doctrine-extensions/lib',
             ),
         ),
         'D' => 
@@ -338,6 +365,17 @@ class ComposerStaticInit5fb2cb1977c803840065dbe6060f32a9
             'Doctrine\\Common\\Annotations\\' => 
             array (
                 0 => __DIR__ . '/..' . '/doctrine/annotations/lib',
+            ),
+            'Discutea\\DForumBundle' => 
+            array (
+                0 => __DIR__ . '/..' . '/discutea/forum-bundle',
+            ),
+        ),
+        'B' => 
+        array (
+            'Behat\\Transliterator' => 
+            array (
+                0 => __DIR__ . '/..' . '/behat/transliterator/src',
             ),
         ),
     );

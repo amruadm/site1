@@ -1,12 +1,10 @@
-myApp.controller('serversController', ['$scope', '$http', function($scope, $http){
+myApp.controller('serversController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout){
     $scope.description = "";
     $scope.updateServers = function(){
         $http.get("/api/minecraft/servers", {}).then(function(response){
-            console.log(response.data.description);
-            $scope.description = response.data.description;
-            $scope.players = response.data.players;
-            $scope.maxPlayers = response.data.max_players;
+            $scope.servers = response.data;
         });
+        $timeout($scope.updateServers, 60000);
     };
     $scope.updateServers();
 }]);
