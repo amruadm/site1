@@ -48,7 +48,7 @@ class ServiceController extends Controller
         return $this->render("services/services.html.twig", [
             'products' => $prod_arr,
             'robocassa_login' => $robocassa_login,
-            'custom_pay_crc' => md5("$robocassa_login::0:$robocassa_pass"),
+            'custom_pay_crc' => md5("$robocassa_login::0:$robocassa_pass:Shp_item=3"),
             'test_crc' => $test_crc
         ]);
     }
@@ -56,22 +56,7 @@ class ServiceController extends Controller
     /**
      * @Route("/payment/order/", name="payment/order")
      */
-    public function orderAction(Request $request)
-    {
-        $inv_id = $request->get('InvId');
-
-        return new Response('OK'.$inv_id, Response::HTTP_OK);
-    }
-
-    private function generateCRCHash($login, $pass, $inv_id, $shp_item, $user_id, $price)
-    {
-        return md5("$login:$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
-    }
-
-    /**
-     * @Route("/payment/success/", name="payment/success")
-     */
-    public function successAction(Request $request, PermissionManager $permissionManager)
+    public function orderAction(Request $request, PermissionManager $pexManager)
     {
         $robocassa_login = $this->container->getParameter('robocassa_login');
         $robocassa_pass = $this->container->getParameter('robocassa_pass2');
@@ -136,13 +121,26 @@ class ServiceController extends Controller
 
         if(!$is_test)
         {
-            $group = $permissionManager->getFromProduct($product);
+            $group = $pexManager->getFromProduct($product);
             if (!empty($group))
             {
-                $permissionManager->setGroup($user, $group);
+                $pexManager->setGroup($user, $group);
             }
         }
 
+        return new Response('OK'.$inv_id, Response::HTTP_OK);
+    }
+
+    private function generateCRCHash($login, $pass, $inv_id, $shp_item, $user_id, $price)
+    {
+        return md5("$login:$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
+    }
+
+    /**
+     * @Route("/payment/success/", name="payment/success")
+     */
+    public function successAction(Request $request)
+    {
         return new Response('OK', Response::HTTP_OK);
     }
 
