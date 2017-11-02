@@ -56,7 +56,22 @@ class ServiceController extends Controller
     /**
      * @Route("/payment/order/", name="payment/order")
      */
-    public function orderAction(Request $request, PermissionManager $permissionManager)
+    public function orderAction(Request $request)
+    {
+        $inv_id = $request->get('InvId');
+
+        return new Response('OK'.$inv_id, Response::HTTP_OK);
+    }
+
+    private function generateCRCHash($login, $pass, $inv_id, $shp_item, $user_id, $price)
+    {
+        return md5("$login:$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
+    }
+
+    /**
+     * @Route("/payment/success/", name="payment/success")
+     */
+    public function successAction(Request $request, PermissionManager $permissionManager)
     {
         $robocassa_login = $this->container->getParameter('robocassa_login');
         $robocassa_pass = $this->container->getParameter('robocassa_pass2');
@@ -128,19 +143,6 @@ class ServiceController extends Controller
             }
         }
 
-        return new Response('OK'.$inv_id, Response::HTTP_OK);
-    }
-
-    private function generateCRCHash($login, $pass, $inv_id, $shp_item, $user_id, $price)
-    {
-        return md5("$login:$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
-    }
-
-    /**
-     * @Route("/payment/success/", name="payment/success")
-     */
-    public function successAction(Request $request)
-    {
         return new Response('OK', Response::HTTP_OK);
     }
 
