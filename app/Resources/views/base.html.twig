@@ -41,7 +41,9 @@
                             </ul>
                         </li>
                         <li><a href="{{ url('info', {'action': 'rules'}) }}">Правила</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
                         <li><a href="{{ url('services') }}">Услуги</a></li>
+                        {% endif %}
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
