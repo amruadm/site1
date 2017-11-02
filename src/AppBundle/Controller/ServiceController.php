@@ -48,7 +48,7 @@ class ServiceController extends Controller
         return $this->render("services/services.html.twig", [
             'products' => $prod_arr,
             'robocassa_login' => $robocassa_login,
-            'custom_pay_crc' => md5("$robocassa_login::0:$robocassa_pass:Shp_item=3"),
+            'custom_pay_crc' => md5("$robocassa_login::0:$robocassa_pass:Shp_item=3:Shp_user=$user_id"),
             'test_crc' => $test_crc
         ]);
     }
@@ -69,7 +69,7 @@ class ServiceController extends Controller
             $robocassa_pass = $this->container->getParameter('robocassa_test_pass2');
 
         $out_summ = $request->get('OutSum');
-        $inv_id = $request->get('InvId');
+        $inv_id = $request->get('inv_id');
         $shp_item = $request->get('Shp_item');
         $shp_user_id = $request->get('Shp_user');
         $crc = $request->get('SignatureValue');
