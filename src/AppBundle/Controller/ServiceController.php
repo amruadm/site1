@@ -61,15 +61,13 @@ class ServiceController extends Controller
         $robocassa_login = $this->container->getParameter('robocassa_login');
         $robocassa_pass = $this->container->getParameter('robocassa_pass2');
 
-        $is_test = false;
-        if($this->has("IsTest"))
-            $is_test = $this->get("IsTest") == 1;
+        $is_test = $request->get("IsTest") == 1;
 
         if($is_test)
             $robocassa_pass = $this->container->getParameter('robocassa_test_pass2');
 
         $out_summ = $request->get('OutSum');
-        $inv_id = $request->get('inv_id');
+        $inv_id = $request->get('InvId');
         $shp_item = $request->get('Shp_item');
         $shp_user_id = $request->get('Shp_user');
         $crc = $request->get('SignatureValue');
@@ -88,12 +86,16 @@ class ServiceController extends Controller
 
         $crc = strtoupper($crc);
 
-        $confirm_crc = $this->generateCRCHash($robocassa_login, $robocassa_pass, $inv_id, $product->getId(), $shp_user_id, $product->getPrice());
+        $prod_price = $out_summ;
+
+        $prod_id = $is_test?$shp_item:$product->getId();
+
+        $confirm_crc = $this->generateCRCHash(null, $robocassa_pass, $inv_id, $prod_id, $shp_user_id, $prod_price);
         $confirm_crc = strtoupper($confirm_crc);
 
         if($confirm_crc != $crc)
         {
-            return new Response('Bad CRC', Response::HTTP_BAD_REQUEST);
+            return new Response('Bad CRC '.$confirm_crc.'<br /> '.$inv_id.' '.$prod_id.' '.$shp_user_id.' '.$prod_price, Response::HTTP_BAD_REQUEST);
         }
         if(!$is_test)
         {
@@ -102,10 +104,6 @@ class ServiceController extends Controller
                 return new Response('Bad price', Response::HTTP_BAD_REQUEST);
             }
         }
-
-        $prod_price = 10;
-        if(!$is_test)
-            $prod_price = $product->getPrice();
 
         $order = new ProductOrder();
         $order->setId($inv_id);
@@ -133,7 +131,10 @@ class ServiceController extends Controller
 
     private function generateCRCHash($login, $pass, $inv_id, $shp_item, $user_id, $price)
     {
-        return md5("$login:$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
+        if(!empty($login))
+            return md5("$login:$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
+        else
+            return md5("$price:$inv_id:$pass:Shp_item=$shp_item:Shp_user=$user_id");
     }
 
     /**

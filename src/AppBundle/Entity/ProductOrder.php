@@ -66,7 +66,7 @@ class ProductOrder
 
     public function __construct()
     {
-        $orderdate = new \DateTime();
+        $this->orderdate = new \DateTime();
     }
 
     /**
