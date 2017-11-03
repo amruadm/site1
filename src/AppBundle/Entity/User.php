@@ -288,6 +288,8 @@ class User implements UserInterface
     {
         if($this->role == 'ROLE_ADMIN')
             return ['ROLE_USER', 'ROLE_VIP', 'ROLE_PREMIUM', 'ROLE_ADMIN'];
+        if($this->role != 'ROLE_CREATED')
+            return ['ROLE_USER', $this->role];
         return [$this->role];
     }
 
