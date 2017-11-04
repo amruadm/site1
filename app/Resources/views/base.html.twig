@@ -94,10 +94,11 @@
                         <br />
                         <span style="font-size: 18pt; color: #834824;"><b>Сервера</b></span>
                         <div ng-repeat="server in servers">
+                            {[{ playersPercent=100*server.players / server.max_players;"" }]}
                             <b><a href="/info/{[{ server.info }]}">{[{ server.name }]}</a></b><br />
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: {[{ 100*server.players / server.max_players }]}%;">
-                                    <span class="sr-only">{[{ server.players }]} / {[{ server.max_players }]}</span>
+                                <div class="progress-bar" role="progressbar" aria-valuenow="{[{ playersPercent }]}" aria-valuemin="0" aria-valuemax="100"  style="width: {[{ playersPercent }]}%;">
+
                                 </div>
                             </div>
                         </div>

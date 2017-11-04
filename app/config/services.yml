@@ -38,6 +38,10 @@ services:
             - 'Premium'
             - 'Administrator'
 
+    AppBundle\Service\Vote\VoteListenerBuilder:
+        arguments:
+          $manager: '@doctrine.orm.entity_manager'
+
     AppBundle\Service\Minecraft\ServersManager:
         public: true
 

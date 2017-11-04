@@ -112,6 +112,13 @@ class User implements UserInterface
     private $serverid;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="credits", type="integer", nullable=false)
+     */
+    private $credits = 0;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="bigint")
@@ -266,6 +273,22 @@ class User implements UserInterface
     public function setServerid($serverid)
     {
         $this->serverid = $serverid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCredits()
+    {
+        return $this->credits;
+    }
+
+    /**
+     * @param int $credits
+     */
+    public function setCredits($credits)
+    {
+        $this->credits = $credits;
     }
 
     /**

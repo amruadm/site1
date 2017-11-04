@@ -49,5 +49,10 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="credits" type="integer" column="credits" nullable="false">
+      <options>
+        <option name="default">0</option>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>

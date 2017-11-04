@@ -311,6 +311,13 @@ hr{
 	color: blue;
 }
 
+.progress-bar span {
+	position: absolute;
+	display: block;
+	width: 100%;
+	color: blue;
+}
+
 @keyframes added {
 	from {
 		opacity: 0;

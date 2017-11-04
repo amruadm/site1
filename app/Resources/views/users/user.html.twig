@@ -32,6 +32,12 @@
                 <td>Дата реистрации</td>
                 <td>{{ user.regdate | date('d.m.Y H:i') }}</td>
             </tr>
+            {% if (user.id == app.user.id) or (is_granted('ROLE_ADMIN')) %}
+            <tr>
+                <td>Кредиты</td>
+                <td>{{ user.credits }}</td>
+            </tr>
+            {% endif %}
             {% if user.id == app.user.id %}
             <tr>
                 <td colspan="2">
