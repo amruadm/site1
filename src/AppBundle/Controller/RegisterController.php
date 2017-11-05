@@ -188,7 +188,7 @@ class RegisterController extends Controller
         }
         $formData = [];
         $form = $this->createFormBuilder($formData)
-            ->setAction('/recovery/'.$user->getLogin())
+            ->setAction('/recovery/'.$user->getLogin().'?hash='.$hash)
             ->add('newpass', PasswordType::class, ['label' => 'Новый пароль'])
             ->add('newpass_confirm', PasswordType::class, ['label' => 'Подтвердите пароль'])
             ->add('submit', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn btn-info']])
