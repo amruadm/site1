@@ -211,7 +211,7 @@ class RegisterController extends Controller
                 ]);
             }
             $data = $form->getData();
-            $user->setPass($passwordEncoder->encodePassword($data['newpass']));
+            $user->setPass($data['newpass']);
             $validator = $this->get('validator');
             $errors = $validator->validate($user);
             if(count($errors) > 0)
@@ -221,6 +221,7 @@ class RegisterController extends Controller
                     'error' => 'Некорректно введён пароль'
                 ]);
             }
+            $user->setPass($passwordEncoder->encodePassword($user, $data['newpass']));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
