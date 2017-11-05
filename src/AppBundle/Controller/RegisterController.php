@@ -192,8 +192,15 @@ class RegisterController extends Controller
             ->add('newpass_confirm', PasswordType::class, ['label' => 'Подтвердите пароль'])
             ->add('submit', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn btn-info']])
             ->getForm();
-        if($form->isSubmitted() && $form->isValid())
+        if($form->isSubmitted())
         {
+            if(!$form->isValid())
+            {
+                return $this->render('register/recovery_pass.html.twig', [
+                    'form' => $form->createView(),
+                    'error' => 'Валидация не прошла'
+                ]);
+            }
             $formData = $form->getData();
             if($formData['newpass'] != $formData['newpass_confirm'])
             {
