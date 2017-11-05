@@ -192,6 +192,7 @@ class RegisterController extends Controller
             ->add('newpass_confirm', PasswordType::class, ['label' => 'Подтвердите пароль'])
             ->add('submit', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn btn-info']])
             ->getForm();
+        $form->handleRequest($request);
         if($form->isSubmitted())
         {
             if(!$form->isValid())
