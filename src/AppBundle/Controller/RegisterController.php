@@ -176,18 +176,18 @@ class RegisterController extends Controller
     }
 
     /**
-     * @Route("/recovery/{login}", name="recovery/pass")
+     * @Route("/recovery/{login}/{hash}", name="recovery/pass")
      */
-    function changePassAction(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    function changePassAction(User $user, $hash, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $hash = strtoupper($request->get('hash'));
+        $hash = strtoupper($hash);
         $localHash = strtoupper($this->generateRecoveryHash($user->getLogin(), $user->getPass()));
         if($localHash != $hash)
         {
             return new Response('', Response::HTTP_FORBIDDEN);
         }
         $form = $this->createFormBuilder()
-            ->setAction('/recovery/'.$user->getLogin().'?hash='.$hash)
+            ->setAction('/recovery/'.$user->getLogin().'/'.$hash)
             ->add('newpass', PasswordType::class, ['label' => 'Новый пароль'])
             ->add('newpass_confirm', PasswordType::class, ['label' => 'Подтвердите пароль'])
             ->add('submit', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn btn-info']])
