@@ -186,8 +186,7 @@ class RegisterController extends Controller
         {
             return new Response('', Response::HTTP_FORBIDDEN);
         }
-        $formData = [];
-        $form = $this->createFormBuilder($formData)
+        $form = $this->createFormBuilder()
             ->setAction('/recovery/'.$user->getLogin().'?hash='.$hash)
             ->add('newpass', PasswordType::class, ['label' => 'Новый пароль'])
             ->add('newpass_confirm', PasswordType::class, ['label' => 'Подтвердите пароль'])
@@ -195,6 +194,7 @@ class RegisterController extends Controller
             ->getForm();
         if($form->isSubmitted() && $form->isValid())
         {
+            $formData = $form->getData();
             if($formData['newpass'] != $formData['newpass_confirm'])
             {
                 return $this->render('register/recovery_pass.html.twig', [
