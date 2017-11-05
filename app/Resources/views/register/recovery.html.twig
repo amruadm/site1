@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="panel primary-panel body-panel">
+        <h1 class="body-header">Восстановление пароля</h1>
+        {% if sended is not defined %}
+            Укажите E-Mail указанный вами при регистрации.
+            {{ form_start(form) }}
+            <div class="row row-form">
+                <div class="col-sm-3">{{ form_label(form.email) }}</div>
+                <div class="col-sm-4">{{ form_widget(form.email) }}</div>
+                <div class="col-sm-5">
+                    {% if error is defined %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row row-form">
+                <div class="col-sm-2">{{ form_widget(form.submit) }}</div>
+            </div>
+            {{ form_end(form) }}
+        {% else %}
+            На указанный вами E-Mail отправлено письмо.
+        {% endif %}
+    </div>
+{% endblock %}

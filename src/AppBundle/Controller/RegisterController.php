@@ -18,9 +18,33 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use AppBundle\Entity\User;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Email;
 
 class RegisterController extends Controller
 {
+    /**
+     * @Rest\Get("/api/check/user")
+     */
+    public function checkEmail(Request $request)
+    {
+        $email = $request->get('email');
+        $constraint = new Collection([
+            'email' => new Email()
+        ]);
+        $errors = $this->get('validator')->validate($request->request->all(), $constraint);
+        if(count($errors) > 0)
+        {
+            return false;
+        }
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $email]);
+        if(empty($user))
+        {
+            return false;
+        }
+        return true;
+    }
+
 	/**
 	 * @Route("/register", name="register")
 	 */
@@ -149,5 +173,106 @@ class RegisterController extends Controller
 
         return new View("OK", Response::HTTP_OK);
 
+    }
+
+    /**
+     * @Route("/recovery/{login}", name="recovery/pass")
+     */
+    function changePassAction(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $hash = strtoupper($request->get('hash'));
+        $localHash = strtoupper($this->generateRecoveryHash($user->getLogin(), $user->getPass()));
+        if($localHash != $hash)
+        {
+            return new Response('', Response::HTTP_FORBIDDEN);
+        }
+        $formData = [];
+        $form = $this->createFormBuilder($formData)
+            ->setAction($this->generateUrl('recovery/pass', ['login' => $user->getLogin()]))
+            ->add('newpass', PasswordType::class, ['label' => 'Новый пароль'])
+            ->add('newpass_confirm', PasswordType::class, ['label' => 'Подтвердите пароль'])
+            ->add('submit', SubmitType::class, ['label' => 'Сохранить', 'attr' => ['class' => 'btn btn-info']])
+            ->getForm();
+        if($form->isSubmitted() && $form->isValid())
+        {
+            if($formData['newpass'] != $formData['newpass_confirm'])
+            {
+                return $this->render('register/recovery_pass.html.twig', [
+                    'form' => $form->createView(),
+                    'error' => 'Пароли не совпадают'
+                ]);
+            }
+            $data = $form->getData();
+            $user->setPass($passwordEncoder->encodePassword($data['newpass']));
+            $validator = $this->get('validator');
+            $errors = $validator->validate($user);
+            if(count($errors) > 0)
+            {
+                return $this->render('register/recovery_pass.html.twig', [
+                    'form' => $form->createView(),
+                    'error' => 'Некорректно введён пароль'
+                ]);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            return $this->render('register/recovery_pass.html.twig', [
+                'form' => $form->createView(),
+                'success' => true
+            ]);
+        }
+        return $this->render('register/recovery_pass.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/recovery", name="recovery")
+     */
+    function recoveryAction(Request $request, \Swift_Mailer $mailer)
+    {
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('recovery'))
+            ->add('email', EmailType::class, ['label' => 'E-Mail'])
+            ->add('submit', SubmitType::class, ['label' => 'Продолжить', 'attr' => ['class' => 'btn btn-info']])
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $formData = $form->getData();
+            $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $formData['email']]);
+            if(empty($user))
+            {
+                return $this->render('register/recovery.html.twig', [
+                    'form' => $form->createView(),
+                    'error' => 'Такой E-Mail не зарегистрирован'
+                ]);
+            }
+            $hash = $this->generateRecoveryHash($user->getLogin(), $user->getPass());
+            $message = (new \Swift_Message('Восстановление пароля'))
+                ->setFrom("admin@craft-life.fun")
+                ->setTo($user->getEmail())
+                ->setBody($this->render("register/recovery_body.html.twig", [
+                    'hash' => $hash,
+                    'login' => $user->getLogin()
+                ]), 'text/html');
+            $mailer->send($message);
+            return $this->render('register/recovery.html.twig', [
+                'sended' => true
+            ]);
+        }
+        return $this->render('register/recovery.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param $username
+     * @param $oldpass
+     * @return string
+     */
+    private function generateRecoveryHash($username, $oldpass)
+    {
+        return md5(sha1($username.$this->container->getParameter('secret').$oldpass));
     }
 }
